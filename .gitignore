@@ -1,0 +1,41 @@
+# Dependencies and generated output
+node_modules/
+.pnpm-store/
+dist/
+build/
+coverage/
+.cache/
+*.log
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Public CA bundles
+!src/**/certs/rds-global-bundle.pem
+
+# Local data and evaluation output
+*.csv
+*.parquet
+output/
+artifacts/
+terraform.tfstate*
+
+# Public synthetic fixtures required by the reproducible tests
+!src/CONGENIA-CIE10/fixtures/dashboard-review-cases.csv
+!src/CONGENIA-REPORTING-PIPELINE/fixtures/sigsa_desidentified.csv
+!src/CONGENIA-REPORTING-PIPELINE/fixtures/sigsa_raw_fixture.csv
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+*:Zone.Identifier
