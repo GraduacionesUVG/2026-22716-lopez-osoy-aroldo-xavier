@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+    --color-1: #D4F3FF;
+    --color-2: #AED3F2;
+    --color-3: #8AB3D6;
+    --color-4: #6794BA;
+    --color-5: #45779E;
+    --color-6: #215A83;
+    --color-7: #003E69;
+    --color-8: #00234A;
+    --color-9: #000B25;
+    --color-10: #000007;
+
+    --color-primary:        #003E69; 
+    --color-primary-hover:  #00234A;
+    --color-primary-light:  #8AB3D6; 
+
+    --color-secondary:      #45779E; 
+    --color-secondary-light:#6794BA;
+
+    --color-destructive:    #B91C1C; 
+    --color-destructive-hover: #991B1B;
+    --color-bg-danger: #b91c1c0d;
+
+
+    --color-readonly-bg: #E2E8F0;
+    --color-white:    #F9F8F6;
+    --color-black:    #1E1E1E;
+    --color-gray:     #A1A1A1;
+    --color-gray-light: #E8E8E8;
+
+    --color-bg:       #F9F8F6;
+    --color-surface:  #FFF;
+    --color-border:   #8AB3D6;
+
+    --color-success: #16A34A; 
+    --color-chip-success: #15803D;
+    --color-bg-success: #16a34a0f;
+
+    /* Ambar: algo queda en espera de resolucion, sin ser un error. */
+    --color-warning: #D97706;
+    --color-chip-warning: #B45309;
+    --color-bg-warning: #f59e0b29;
+
+    --font-family: 'Montserrat', sans-serif;
+    --font-size-xs:   0.75rem;   /* 12px */
+    --font-size-sm:   0.875rem;  /* 14px */
+    --font-size-base: 1rem;      /* 16px */
+    --font-size-lg:   1.125rem;  /* 18px */
+    --font-size-xl:   1.25rem;   /* 20px */
+
+    --radius:    10px;
+    --radius-sm: 6px;
+    --radius-lg: 15px;
+    --radius-full: 9999px; /* para chips/pills */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  color: var(--color-black);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100dvh;
+}
+
+/* Previene el zoom automático de iOS al enfocar campos de texto.
+   iOS hace zoom cuando font-size < 16px */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}

@@ -1,0 +1,12 @@
+# =============================================================================
+# Finales de linea
+# =============================================================================
+# Los scripts .sh se copian dentro de una imagen Alpine y los ejecuta /bin/sh.
+# Con CRLF, el shebang pasa a ser "#!/bin/sh\r" y el kernel busca un
+# interprete llamado "sh\r" que no existe: el script falla al arrancar. Como
+# el entrypoint de la imagen de nginx corre con `set -e`, esa falla tumba el
+# contenedor entero antes de que nginx llegue a escuchar.
+#
+# En Windows (core.autocrlf=true) un clon nuevo convertiria estos archivos a
+# CRLF al hacer checkout, asi que hay que fijarlos explicitamente.
+*.sh text eol=lf

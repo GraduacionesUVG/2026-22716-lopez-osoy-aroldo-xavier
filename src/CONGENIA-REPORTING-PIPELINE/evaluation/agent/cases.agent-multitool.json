@@ -1,0 +1,58 @@
+[
+  {
+    "questionId": "agent-mt-001",
+    "category": "sigsa-chart-reuse",
+    "question": "Cuáles son los cinco diagnósticos más frecuentes en SIGSA3?",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "diagnostico": "ITU", "total": 3359 },
+      { "diagnostico": "RESFRIADO COMUN", "total": 2397 },
+      { "diagnostico": "resfriado comun", "total": 2137 },
+      { "diagnostico": "IRS ", "total": 1367 },
+      { "diagnostico": "ENFERMEDAD PEPTICA", "total": 1274 }
+    ],
+    "followUpAction": {
+      "action": "show_chart",
+      "question": "Muéstralo ahora como gráfica."
+    },
+    "expectedBlockTypes": ["bar_chart"]
+  },
+  {
+    "questionId": "agent-mt-002",
+    "category": "congenia-chart-reuse",
+    "question": "Agrupa las fichas CONGENIA por sexo del paciente.",
+    "expectedSource": "CONGENIA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped",
+    "expectedResult": [
+      { "sexo": null, "total": 10 },
+      { "sexo": "F", "total": 1 },
+      { "sexo": "I", "total": 1 },
+      { "sexo": "M", "total": 1 }
+    ],
+    "followUpAction": {
+      "action": "show_chart",
+      "question": "Muéstralo ahora como gráfica."
+    },
+    "expectedBlockTypes": ["bar_chart"]
+  },
+  {
+    "questionId": "agent-mt-003",
+    "category": "cross-source-chart-reuse",
+    "question": "Compara el total de registros SIGSA3 con el total de fichas pediátricas genéticas CONGENIA.",
+    "expectedSource": "MULTI",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "fuente": "SIGSA", "total": 190140 },
+      { "fuente": "CONGENIA", "total": 13 }
+    ],
+    "followUpAction": {
+      "action": "show_chart",
+      "question": "Muéstralo ahora como gráfica."
+    },
+    "expectedBlockTypes": ["bar_chart"]
+  }
+]

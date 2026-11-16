@@ -1,0 +1,210 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.subtitle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  text-align: center;
+}
+
+.subtitleBadge {
+  flex-shrink: 0;
+}
+
+/* Dos columnas: la decision a la izquierda, la ficha a la derecha. Bajo 1000px
+   se apilan y el panel deja de ser sticky - con una sola columna, fijarlo taparia
+   justo la ficha que hay que mirar. */
+.columns {
+  display: grid;
+  grid-template-columns: minmax(320px, 400px) 1fr;
+  align-items: start;
+  gap: 20px;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: sticky;
+  top: 8px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.sinCambios {
+  padding: 20px;
+  border: 1.5px dashed var(--color-gray);
+  border-radius: var(--radius-lg);
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-gray);
+}
+
+.resuelta {
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-secondary);
+  border-radius: var(--radius);
+  background: var(--color-1);
+  font-size: var(--font-size-xs);
+  line-height: 1.6;
+  color: var(--color-primary);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Comentario general del pediatra. Alto acotado y scroll propio: puede ser un
+   parrafo o tres, y no debe empujar la ficha fuera de la pantalla. */
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.commentTitle {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.commentBody {
+  max-height: 180px;
+  overflow-y: auto;
+  padding-right: 6px;
+  font-size: var(--font-size-sm);
+  line-height: 1.6;
+  color: var(--color-black);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.ficha {
+  min-width: 0;
+}
+
+/* Acciones y aviso de guardado */
+
+.saveError {
+  padding: 10px 14px;
+  border: 1.5px solid var(--color-destructive);
+  border-radius: var(--radius);
+  background: var(--color-bg-danger);
+  color: var(--color-destructive);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* El dialogo de salida ya no se arma aqui: lo pinta `ConfirmDialog`, que se
+   quedo con estos estilos. */
+
+/* Carga y error */
+
+.skeletons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton {
+  height: 120px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    100deg,
+    var(--color-surface) 30%,
+    var(--color-gray-light) 50%,
+    var(--color-surface) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.stateIcon,
+.stateTitle {
+  color: var(--color-destructive);
+}
+
+.stateTitle {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+}
+
+.stateText {
+  max-width: 46ch;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
+.stateActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (max-width: 1000px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+
+  .left {
+    position: static;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+/* Los catalogos solo traducen dos desplegables; si fallan, se avisa y se sigue. */
+.catalogosCaidos {
+  padding: 8px 12px;
+  border: 1.5px solid var(--color-warning);
+  border-radius: var(--radius);
+  background: var(--color-bg-warning);
+  color: var(--color-chip-warning);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}

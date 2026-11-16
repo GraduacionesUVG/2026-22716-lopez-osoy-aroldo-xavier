@@ -1,0 +1,86 @@
+/* El titulo vive sobre el azul, no dentro de la tarjeta: en movil encima del
+   formulario, en escritorio a su izquierda. La sesion y el cierre de sesion
+   estan ahora en AppTopBar. */
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    color: var(--color-white);
+}
+
+.title {
+    font-family: var(--font-family);
+    /* Los tokens paran en --font-size-xl (20px), corto para un titulo que ocupa
+       media pantalla en escritorio. El clamp escala sin inventar tokens. */
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-white);
+}
+
+.subtitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    /* Pleno y no translucido: al 88% cae a 4.13:1 sobre el azul. */
+    color: var(--color-white);
+    line-height: 1.5;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.submitButton {
+    margin-top: 4px;
+}
+
+/* El aviso de "sin instituciones" deja la pantalla sin salida, asi que se
+   centra en la tarjeta en vez de alinearse a la izquierda como el resto de
+   mensajes de campo. */
+.sinInstituciones {
+    justify-content: center;
+    /* Centrado tambien en vertical: el icono pegado arriba solo tiene sentido
+       cuando el texto se alinea a la izquierda y arranca en esa primera linea. */
+    align-items: center;
+    text-align: center;
+}
+
+.tenantField {
+    display: grid;
+    gap: 8px;
+    font-size: var(--font-size-sm);
+}
+
+.tenantField select {
+    padding: 12px;
+    border: 1px solid var(--color-border, #d1d5db);
+    border-radius: var(--radius, 8px);
+    font: inherit;
+    background: var(--color-surface, white);
+    color: inherit;
+}
+
+@media (min-width: 900px) {
+    .hero {
+        gap: 14px;
+        text-align: left;
+    }
+
+    .subtitle {
+        max-width: 46ch;
+    }
+}
+
+/* Corregir y registrar comparten fila: son las dos salidas de la misma
+   respuesta. En pantallas angostas se apilan para no partir las etiquetas. */
+.notFoundActions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+}

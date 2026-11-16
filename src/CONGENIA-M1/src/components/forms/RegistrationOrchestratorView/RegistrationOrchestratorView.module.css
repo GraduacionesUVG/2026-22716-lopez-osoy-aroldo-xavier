@@ -1,0 +1,510 @@
+.container {
+    min-height: 100dvh;
+    background: #F3F6F9;
+    display: flex;
+    flex-direction: column;
+}
+
+.stickyHeader {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.06);
+}
+
+.topBar {
+    background: var(--color-secondary);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* El alto lo fija el boton (44px); el padding solo lo respira. */
+    padding: 6px 14px;
+}
+
+.brand {
+    display: inline-flex;
+    align-items: center;
+    /* 2px, como en AppTopBar y SidebarNav: mas separacion y la "O" deja de caer
+       en el vertice de los rayos. */
+    gap: 2px;
+    flex-shrink: 0;
+}
+
+/* 44/11 es la misma proporcion 4:1 que AppTopBar y SidebarNav (92/22), y por el
+   mismo motivo: los rayos del semicirculo convergen justo en la "O" con la que
+   abre "ONGENIA", y fuera de esa proporcion la O se sale del vertice y el
+   conjunto se ve roto.
+ *
+ * Que la marca vuelva a 44px no le cuesta alto a la cabecera: el alto de la fila
+ * ya lo fija el boton de regresar, que mide eso mismo. El espacio no se recupero
+ * achicando el logo, sino dandole una fila compartida en vez de una para el. */
+.brandLogo {
+    width: auto;
+    height: 44px;
+    object-fit: contain;
+    background: transparent;
+    flex-shrink: 0;
+}
+
+.brandWordmark {
+    width: auto;
+    height: 11px;
+    object-fit: contain;
+}
+
+/* El azul de marca sobre el azul medio de la barra, que es el par que ya usa toda
+   la app. Antes iba en negro al 18%: se leia bien, pero daba un gris apagado que
+   no existe en la paleta y desentonaba. Blanco sobre #003E69 son 11.7:1. */
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-shrink: 0;
+    /* 44px es el minimo comodo para el dedo. */
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    border-radius: var(--radius-full);
+    background: var(--color-primary);
+    color: var(--color-white);
+    font: inherit;
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 120ms ease;
+}
+
+.backButton:hover {
+    background: var(--color-primary-hover);
+}
+
+.backButton:focus-visible {
+    outline: 2px solid var(--color-white);
+    outline-offset: 2px;
+}
+
+/* El padding superior es el aire que separa la barra del boton de arriba: sin el
+   quedaban a 6px y se leian como una sola pieza. */
+.progressBlock {
+    background: var(--color-secondary);
+    padding: 10px 14px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.progressTrack {
+    flex: 1;
+    height: 6px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: var(--color-white);
+    width: 0%;
+}
+
+.progressText {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-white);
+    white-space: nowrap;
+}
+
+/* Una sola linea, pase lo que pase: es cabecera pegajosa, y un nombre largo que
+   la hiciera crecer devolveria el alto que este rediseno vino a recuperar.
+   `center` y no `baseline`: el baseline de una caja con overflow oculto es su
+   borde inferior, asi que en baseline la etiqueta se descolgaria del nombre. */
+.patientInfo {
+    padding: 10px 14px;
+    background: var(--color-surface);
+    border-bottom: 1.5px solid var(--color-gray-light);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+}
+
+.patientLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-gray);
+    flex-shrink: 0;
+}
+
+/* El nombre completo sigue en el DOM -el lector de pantalla lo lee entero- y en
+   el `title`. Lo que se recorta es solo la pintura. `min-width: 0` es lo que deja
+   encogerse al hijo flex; sin el, el texto empuja y no hay elipsis que valga. */
+.patientName {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sections {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+    flex: 1;
+}
+
+.footer {
+    background: var(--color-surface);
+    border-top: 1.5px solid var(--color-gray-light);
+    padding: 12px 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.completeBanner {
+    border: 1.5px solid var(--color-success);
+    background: var(--color-bg-success);
+    color: var(--color-chip-success);
+    padding: 8px 12px;
+    border-radius: var(--radius-full);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.completeIcon {
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    border: 1.5px solid var(--color-success);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 320px) {
+    .actions {
+        grid-template-columns: 1fr;
+    }
+}
+
+.draftButton {
+    border-color: var(--color-border) !important;
+    color: var(--color-secondary) !important;
+}
+
+.draftButton:hover:not(:disabled) {
+    background: #F1F6FB !important;
+}
+
+
+.finalizeButton {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.finalizeButton:disabled {
+    background: #C8D6E5;
+    color: var(--color-white);
+}
+
+.finalizeComplete {
+    background: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+}
+
+/* ── Modales de feedback (guardando / guardado) ─────────────────── */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 100;
+}
+
+.feedbackCard {
+    width: 100%;
+    max-width: 320px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 24px;
+}
+
+/* Spinner */
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.spinner {
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    border: 4px solid var(--color-gray-light);
+    border-top-color: var(--color-primary);
+    animation: spin 0.75s linear infinite;
+    flex-shrink: 0;
+}
+
+.feedbackTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-align: center;
+    margin: 0;
+}
+
+/* El motivo crece solo en vertical: ensancharlo desborda la tarjeta del modal. */
+.reasonInput {
+    width: 100%;
+    box-sizing: border-box;
+    font: inherit;
+    resize: vertical;
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 10px 12px;
+    color: var(--color-black);
+}
+
+.reasonInput:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 1px;
+}
+
+/* Éxito */
+
+.successCircle {
+    width: 72px;
+    height: 72px;
+    border-radius: 9999px;
+    background: var(--color-success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.successTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-lg, 1.125rem);
+    font-weight: 700;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.successInfo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    border-radius: var(--radius);
+    background: #F3F6F9;
+}
+
+.infoRow {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.infoLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-gray);
+}
+
+.infoValue {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* ── Modal de confirmación de salida ────────────────────────────── */
+
+.confirmMessage {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray);
+    text-align: center;
+}
+
+.confirmActions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+@media (max-width: 320px) {
+    .confirmActions {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Modo lectura dentro del dashboard: el área de contenido ya pone el fondo y el
+   relleno, así que aquí solo queda apilar las secciones. */
+.containerEmbedded {
+    display: flex;
+    flex-direction: column;
+}
+
+.sectionsEmbedded {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Aviso de ficha ya registrada. Vive en la cabecera pegajosa, bajo el nombre del paciente. */
+.noticeBlock {
+    padding: 10px 14px;
+    background: var(--color-surface);
+    border-bottom: 1.5px solid var(--color-gray-light);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.noticeBadge,
+.noticePending,
+.noticeAction {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    border: 1.5px solid transparent;
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.noticeBadge {
+    border-color: var(--color-2);
+    background: var(--color-1);
+    color: var(--color-primary);
+}
+
+/* La adenda en espera va en ambar: se distingue del aviso informativo de arriba. */
+.noticePending,
+/* Lo que el medico puede hacer aqui mismo comparte el ambar: el azul informativo se
+   leia como decorado y el aviso de la adenda pasaba desapercibido. */
+.noticeAction {
+    border-color: var(--color-warning);
+    background: var(--color-bg-warning);
+    color: var(--color-chip-warning);
+}
+
+/* ---------- Salto a la seccion incompleta ---------- */
+
+/* La cabecera pegajosa taparia el titulo de la seccion al hacer scrollIntoView,
+   asi que se reserva su alto. Lo publica el orquestador midiendo la cabecera de
+   verdad: su alto cambia con el modo -la barra de % solo sale en alta- y con el
+   aviso, que ocupa una o dos lineas segun el ancho. El 96px del respaldo es lo que
+   media antes, por si el navegador no soporta ResizeObserver. */
+.sections > * {
+    scroll-margin-top: calc(var(--sticky-header-h, 96px) + 8px);
+}
+
+/* La cabecera de la seccion abierta se queda a la vista mientras se llena: el medico
+   no pierde de vista en que seccion esta ni cuanto le falta.
+ *
+ * Solo en captura. En `.sectionsEmbedded` -las pantallas del genetista- la ficha se
+ * lee entera y esas pantallas ya traen su propia barra fija, con la que competiria.
+ *
+ * Las tarjetas tienen `overflow: clip` justo para que esto funcione: con `hidden`
+ * serian contenedores de scroll y el pegado no tendria efecto. */
+.sections > * > [data-section-header] {
+    position: sticky;
+    top: var(--sticky-header-h, 96px);
+    /* Bajo la cabecera principal (z-index 20) y sobre el cuerpo de la seccion. */
+    z-index: 5;
+}
+
+/* Linea propia de la cabecera fija.
+ *
+ * El cuerpo de la seccion ya trae un `border-top`, pero es suyo: se va con el scroll
+ * y deja la cabecera flotando sin borde sobre el contenido que le pasa por debajo,
+ * confundida con el fondo. La sombra dibuja esa misma linea de 1.5px pegada a la
+ * cabecera y sin ocupar espacio, asi que en reposo cae justo encima del borde del
+ * cuerpo -mismo color, mismo grosor, se leen como una sola- y al quedar fija viaja
+ * con ella.
+ *
+ * Solo en las abiertas: en una seccion plegada la cabecera es toda la tarjeta y la
+ * linea caeria sobre su propio borde. `aria-expanded` ya dice cual es cual. */
+.sections > * > [data-section-header][aria-expanded="true"] {
+    box-shadow: 0 1.5px 0 var(--color-border);
+}
+
+/* Realce tras el salto: dice "es aqui" sin competir con el rojo de los campos
+   que faltan, y se apaga solo a los 2.6s. */
+.sectionHighlighted {
+    animation: seccionResaltada 2.6s ease-out;
+}
+
+@keyframes seccionResaltada {
+    0%, 55% {
+        box-shadow: 0 0 0 3px var(--color-2), 0 8px 24px rgba(0, 62, 105, 0.16);
+    }
+    100% {
+        box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sectionHighlighted {
+        animation: none;
+        box-shadow: 0 0 0 3px var(--color-2);
+    }
+}
+
+/* Cada seccion que falta es un atajo. Se ve como enlace dentro del aviso, sin
+   robarle el peso visual al boton de finalizar. */
+.missingLink {
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 800;
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.missingLink:hover {
+    color: var(--color-primary-hover);
+}
+
+.missingLink:focus-visible {
+    outline: 2px solid var(--color-secondary);
+    outline-offset: 2px;
+    border-radius: 2px;
+}

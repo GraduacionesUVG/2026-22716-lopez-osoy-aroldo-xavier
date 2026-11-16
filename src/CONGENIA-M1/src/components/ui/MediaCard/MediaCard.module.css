@@ -1,0 +1,158 @@
+.card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.card[role="button"] {
+  cursor: pointer;
+}
+
+.card[role="button"]:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+.left {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumbnail {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  border: 1.5px solid var(--color-border);
+}
+
+.placeholder {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-gray-light);
+  color: var(--color-gray);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-black);
+  line-height: 1.3;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-1);
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  gap: 6px;
+}
+
+.removeButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: none;
+  background-color: rgba(185, 28, 28, 0.12);
+  color: var(--color-destructive);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: rgba(185, 28, 28, 0.2);
+}
+
+.removeButton:focus-visible {
+  outline: 3px solid rgba(185, 28, 28, 0.35);
+  outline-offset: 2px;
+}
+
+.removeIcon {
+  display: inline-flex;
+}
+
+/* Vigencia del elemento dentro de la ficha. El borde celeste de .card marca lo activo;
+   lo sustituido por una adenda se marca en rojo y baja al final de su seccion. */
+.cardReplaced {
+  border-color: var(--color-destructive);
+}
+
+.badgeActive,
+.badgeReplaced {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid transparent;
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badgeActive {
+  /* Borde transparente heredado: sin linea visible, pero conserva la altura del otro badge. */
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+.badgeReplaced {
+  border-color: var(--color-destructive);
+  background-color: var(--color-bg-danger);
+  color: var(--color-destructive);
+}
+
+/* Realce temporal al llegar desde el panel de cambios de una adenda. El anillo
+   va por `box-shadow` y no por `border`, para no pisar el borde que ya codifica
+   la vigencia (celeste activa / rojo sustituida) ni mover la card un pixel. */
+.cardHighlighted {
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+  animation: mediaCardPulse 1.2s ease-out 2;
+}
+
+@keyframes mediaCardPulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--color-primary-light); }
+  50%      { box-shadow: 0 0 0 7px color-mix(in srgb, var(--color-primary-light) 45%, transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardHighlighted {
+    animation: none;
+  }
+}

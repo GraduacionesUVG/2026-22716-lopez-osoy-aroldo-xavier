@@ -1,0 +1,407 @@
+.card {
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    /* `clip` y no `hidden`: recorta igual las esquinas redondeadas, pero no crea un
+       contenedor de scroll, que es lo que dejaba sin efecto el `position: sticky`
+       de la cabecera de la seccion. */
+    overflow: clip;
+    background: var(--color-surface);
+}
+
+.cardIncomplete {
+    border-color: var(--color-destructive);
+}
+
+.body {
+    border-top: 1.5px solid var(--color-border);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sectionIntro {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-gray);
+    line-height: 1.45;
+}
+
+/* Consentimiento ya firmado: solo la confirmacion, sin repetir lo capturado. */
+.signedCard {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--color-success);
+    border-radius: var(--radius-lg);
+    background: var(--color-bg-success);
+    color: var(--color-chip-success);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+}
+
+.signedIcon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: 9999px;
+    background: var(--color-success);
+    color: var(--color-white);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.docHeader {
+    background: var(--color-primary);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.docHeaderTitles {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.docHospitalName {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-primary-light);
+}
+
+.docFormTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--color-white);
+    line-height: 1.4;
+}
+
+.docMetaGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.docMetaItem {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.docMetaLabel {
+    font-family: var(--font-family);
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-primary-light);
+}
+
+.docMetaValue {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-white);
+    line-height: 1.3;
+}
+
+.intro {
+    background: #EBF4FB;
+    border-radius: var(--radius);
+    border-left: 4px solid var(--color-secondary);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.introGreeting {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.introBody {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-primary);
+    line-height: 1.55;
+}
+
+.section {
+    border-left: 3px solid var(--color-border);
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sectionTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.sectionParagraph {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-black);
+    line-height: 1.55;
+}
+
+.paragraphLead {
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.bulletList {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+}
+
+.bulletItem {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.bulletDot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    flex-shrink: 0;
+    margin-top: 6px;
+}
+
+.bulletText {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-black);
+    line-height: 1.55;
+}
+
+.blockTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.blockInstruction {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-secondary);
+    line-height: 1.5;
+}
+
+.consentCards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.errorText {
+    display: block;
+    margin-top: 4px;
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-destructive);
+}
+
+.subSectionTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.subLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-gray);
+}
+
+.lockedNotice {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.relationChips {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.noteBox {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    border: 1.5px solid #F59E0B;
+    background: rgba(245, 158, 11, 0.18);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    color: #92400E;
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    line-height: 1.4;
+}
+
+.noteIcon {
+    display: inline-flex;
+    color: #92400E;
+}
+
+.noteText strong {
+    font-weight: 700;
+}
+
+/* ── Modal de firma ─────────────────────────────────────────────
+   Mismo diseño que el alta de signos de alerta (AlertSignsSection.module.css),
+   para que el medico reconozca el paso a paso. */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    z-index: 50;
+}
+
+.modal {
+    width: 100%;
+    max-width: 420px;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: 85vh;
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1.5px solid var(--color-border);
+}
+
+.modalTitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+.modalClose {
+    width: 32px;
+    height: 32px;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-primary);
+    font-size: 22px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.modalBody {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+    overflow: auto;
+    /* Sin esto el cuerpo no encoge dentro del modal y el scroll lo haria la
+       pagina, no el documento: el "Siguiente" nunca se enteraria del final. */
+    min-height: 0;
+}
+
+.stepIndicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-bottom: 1.5px solid var(--color-border);
+    background: var(--color-readonly-bg, #f9fafb);
+}
+
+.stepDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 9999px;
+    background: var(--color-border);
+    transition: background 0.2s, width 0.2s;
+    flex-shrink: 0;
+}
+
+.stepDotCurrent {
+    width: 20px;
+    background: var(--color-primary);
+    border-radius: 4px;
+}
+
+.stepDotDone {
+    background: var(--color-primary);
+    opacity: 0.45;
+}
+
+.stepLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+    margin-left: auto;
+}
+
+.stepError {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    color: var(--color-destructive, #b91c1c);
+}
+
+.scrollHint {
+    padding: 8px 16px;
+    border-top: 1.5px solid var(--color-border);
+    background: var(--color-readonly-bg, #f9fafb);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 500;
+    color: var(--color-primary);
+    text-align: center;
+}
+
+.modalFooter {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 16px;
+    border-top: 1.5px solid var(--color-border);
+}

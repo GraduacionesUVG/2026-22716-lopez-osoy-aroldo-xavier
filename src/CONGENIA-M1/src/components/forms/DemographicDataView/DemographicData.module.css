@@ -1,0 +1,103 @@
+.card {
+    border: 1.5px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    /* `clip` y no `hidden`: recorta igual las esquinas redondeadas, pero no crea un
+       contenedor de scroll, que es lo que dejaba sin efecto el `position: sticky`
+       de la cabecera de la seccion. */
+    overflow: clip;
+    background: var(--color-surface);
+}
+
+.cardIncomplete {
+    border-color: var(--color-destructive);
+}
+
+.body {
+    border-top: 1.5px solid var(--color-border);
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.questionLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    color: var(--color-black);
+}
+
+.errorText {
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    color: var(--color-destructive);
+}
+
+/* Mismo centrado que el aviso de "sin instituciones" de la busqueda: un aviso que
+   ocupa el ancho entero se lee mejor centrado que con el texto pegado al borde.
+   `align-items: center` cancela el `flex-start` del componente, que solo tiene
+   sentido cuando el texto se alinea a la izquierda y arranca en la primera linea. */
+.lockedNotice {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.binaryGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.ternaryGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+}
+
+.binaryGroup > button,
+.ternaryGroup > button {
+    width: 100%;
+    justify-content: center;
+}
+
+.chipSection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.groupDivider {
+    border: none;
+    border-top: 1px solid var(--color-gray-light);
+    margin: 0;
+}
+
+.groupLabel {
+    display: block;
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    color: var(--color-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 10px 0;
+}
+
+.chipGroup {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.stepperGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}

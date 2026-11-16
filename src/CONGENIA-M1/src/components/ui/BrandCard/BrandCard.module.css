@@ -1,0 +1,70 @@
+.background {
+    position: fixed;
+    inset: 0;
+    overflow-y: auto;
+    /* El mismo azul que el sidebar del dashboard y la barra del orquestador: es
+       el color de cromo de la app y la ficha no debe salirse de esa familia.
+       Aguanta texto blanco encima (4.79:1 con #FFF, 4.51:1 con --color-white),
+       pero sin margen para opacidades: cualquier alpha sobre este azul baja de
+       4.5:1, asi que el texto de encima va a color pleno. */
+    background: var(--color-secondary);
+    display: flex;
+    flex-direction: column;
+}
+
+.topBarSlot {
+    flex-shrink: 0;
+}
+
+.main {
+    flex: 1 0 auto;
+    display: flex;
+    padding: 24px 16px;
+}
+
+/* `margin: auto` sobre un flex item lo centra en los dos ejes. */
+.centered {
+    margin: auto;
+    width: 100%;
+    max-width: 448px;
+}
+
+.split {
+    margin: auto;
+    width: 100%;
+    max-width: 480px;
+    display: grid;
+    gap: 24px;
+}
+
+.card {
+    width: 100%;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+    padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.logo {
+    width: auto;
+    height: 64px;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+@media (min-width: 900px) {
+    .main {
+        padding: 40px 24px;
+    }
+
+    .split {
+        max-width: 1040px;
+        grid-template-columns: 1fr minmax(360px, 448px);
+        align-items: center;
+        gap: 64px;
+    }
+}

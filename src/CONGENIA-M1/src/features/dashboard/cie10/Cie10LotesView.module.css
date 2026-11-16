@@ -1,0 +1,212 @@
+/* Lista de lotes CIE-10. Contenedor, estados y esqueletos de AdendasView.module.css,
+   y la tarjeta de AdendaResultCard.module.css: la misma bandeja, otro contenido. */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.count {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+/* Igual que la paginación de la tabla del lote. */
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--font-size-sm);
+}
+
+/* Tarjeta */
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: box-shadow 160ms ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 18px rgba(0, 62, 105, 0.12);
+}
+
+.body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-primary);
+}
+
+.date {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-secondary);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 4px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}
+
+.term {
+  font-weight: 700;
+  color: var(--color-black);
+}
+
+.value {
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+
+.openButton {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 8px 20px;
+  border-radius: var(--radius);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.openButton:hover {
+  background: var(--color-primary);
+}
+
+.openButton:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  outline-offset: 2px;
+}
+
+/* Estados */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.stateIcon {
+  color: var(--color-primary-light);
+}
+
+.stateTitle {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.stateText {
+  max-width: 46ch;
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-gray);
+}
+
+.stateEmpty .stateIcon,
+.stateEmpty .stateTitle {
+  color: var(--color-gray);
+}
+
+.stateError .stateIcon,
+.stateError .stateTitle {
+  color: var(--color-destructive);
+}
+
+.skeleton {
+  height: 128px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    100deg,
+    var(--color-surface) 30%,
+    var(--color-gray-light) 50%,
+    var(--color-surface) 70%
+  );
+  background-size: 300% 100%;
+  animation: lotesShimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes lotesShimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+@media (max-width: 640px) {
+  .card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .openButton {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .skeleton {
+    animation: none;
+  }
+}

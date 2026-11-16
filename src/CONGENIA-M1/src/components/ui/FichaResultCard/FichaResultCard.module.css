@@ -1,0 +1,102 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  transition: box-shadow 160ms ease, transform 160ms ease;
+}
+
+.card:hover {
+  box-shadow: 0 6px 18px rgba(0, 62, 105, 0.12);
+  transform: translateY(-2px);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.name {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.25;
+}
+
+.date {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  /* Empuja el botón al fondo para que todas las cards de una fila lo alineen,
+     aunque un nombre ocupe dos líneas. */
+  flex: 1;
+}
+
+/* Etiqueta arriba, valor abajo, siempre.
+   Antes era una fila con `flex-wrap`, así que el valor caía abajo solo cuando no
+   cabía: la misma card se veía de dos formas distintas según el ancho. Apilarlo
+   a propósito lo deja consistente en toda la rejilla. */
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: var(--font-size-xs);
+  line-height: 1.4;
+}
+
+.term {
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.value {
+  color: var(--color-secondary);
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.openButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 28px;
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.openButton:hover {
+  background: var(--color-primary);
+}
+
+.openButton:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+
+  .card:hover {
+    transform: none;
+  }
+}

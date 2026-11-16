@@ -1,0 +1,542 @@
+/* Panel lateral del agente de datos. En escritorio ocupa la columna derecha
+   del layout y se queda pegado bajo el topbar; en movil es una hoja completa. */
+
+.panel {
+    position: sticky;
+    /* Topbar (~72px) + padding del contenido (24px). */
+    top: 96px;
+    display: flex;
+    flex-direction: column;
+    height: calc(100dvh - 120px);
+    min-height: 420px;
+    border: 1.5px solid var(--color-gray-light);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 12px 12px 16px;
+    border-bottom: 1px solid var(--color-gray-light);
+}
+
+.headerIcon {
+    color: var(--color-primary);
+    flex-shrink: 0;
+}
+
+.title {
+    flex: 1;
+    margin: 0;
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.iconButton {
+    display: inline-grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-black);
+    cursor: pointer;
+}
+
+.iconButton:hover:not(:disabled) {
+    background: var(--color-gray-light);
+}
+
+.iconButton:disabled {
+    color: var(--color-gray);
+    cursor: not-allowed;
+}
+
+.iconButton:focus-visible,
+.suggestion:focus-visible,
+.send:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Mensajes */
+
+.messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+.bubble {
+    max-width: 88%;
+    padding: 10px 14px;
+    border-radius: var(--radius);
+    font-size: var(--font-size-sm);
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.bubble p {
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+/* Respuesta del agente con formato (ver TextoAgente). Ya no respeta los
+   saltos de línea del texto: los separa con <p> y <br>, como HTML. */
+.textoFormato p {
+    margin: 0 0 8px;
+    white-space: normal;
+}
+
+.textoFormato ul,
+.textoFormato ol {
+    margin: 4px 0 8px;
+    padding-left: 20px;
+}
+
+.textoFormato li + li {
+    margin-top: 2px;
+}
+
+.textoFormato li > ul,
+.textoFormato li > ol {
+    margin: 2px 0 0;
+}
+
+.textoFormato strong {
+    font-weight: 700;
+}
+
+.textoFormato code {
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 35, 74, 0.08);
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 0.92em;
+    white-space: nowrap;
+}
+
+.textoFormato > :last-child {
+    margin-bottom: 0;
+}
+
+.agent {
+    align-self: flex-start;
+    background: var(--color-gray-light);
+    color: var(--color-black);
+    border-bottom-left-radius: 4px;
+}
+
+.user {
+    align-self: flex-end;
+    background: var(--color-5);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+}
+
+.blocked {
+    background: var(--color-bg-danger);
+    border: 1px solid var(--color-destructive);
+}
+
+.failed {
+    background: var(--color-bg-warning);
+    border: 1px solid var(--color-warning);
+}
+
+.source {
+    display: block;
+    margin-bottom: 4px;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-secondary);
+}
+
+.blocked .source {
+    color: var(--color-destructive);
+}
+
+/* Sugerencias iniciales */
+
+.suggestions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.suggestion {
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.suggestion:hover:not(:disabled) {
+    background: var(--color-1);
+}
+
+.suggestion:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Tabla del resultado */
+
+.tableWrap {
+    margin-top: 10px;
+    max-height: 240px;
+    overflow: auto;
+    border: 1px solid #d8e7f2;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-xs);
+    /* La burbuja parte en cualquier punto para textos sin espacios; en la
+       tabla eso rompia los numeros ("18,|412"). */
+    overflow-wrap: normal;
+}
+
+.table th,
+.table td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--color-gray-light);
+    text-align: left;
+    vertical-align: top;
+}
+
+.table th {
+    white-space: nowrap;
+    position: sticky;
+    top: 0;
+    background: #f6fbff;
+    color: var(--color-primary);
+    font-weight: 700;
+}
+
+.table .numeric {
+    text-align: right;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.table tr:last-child td {
+    border-bottom: 0;
+}
+
+.resultBlocks {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.resultBlock {
+    min-width: 0;
+}
+
+.blockTitle {
+    margin: 0 0 6px;
+    font-size: var(--font-size-xs);
+    color: var(--color-primary);
+}
+
+/* En una tarjeta del tablero la tabla llena la celda y hace scroll por dentro. */
+/* En la tarjeta del tablero: sin el tope del chat; el alto lo pone la tarjeta. */
+.tableFill {
+    max-height: none;
+    margin-top: 0;
+    box-sizing: border-box;
+}
+
+.resultBlock .tableWrap {
+    margin-top: 0;
+}
+
+.chartWrap {
+    width: 100%;
+    height: 230px;
+    min-width: 260px;
+    padding-top: 4px;
+    border: 1px solid #d8e7f2;
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+}
+
+.metricBlock {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px;
+    border-left: 3px solid var(--color-primary);
+    background: var(--color-surface);
+}
+
+.metricBlock span {
+    min-width: 0;
+    color: var(--color-secondary);
+}
+
+.metricBlock strong {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    font-size: var(--font-size-lg);
+    color: var(--color-primary);
+}
+
+.warningBlock {
+    padding: 8px 10px;
+    border-left: 3px solid var(--color-warning);
+    background: var(--color-bg-warning);
+}
+
+.resultActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.resultAction {
+    padding: 7px 10px;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.resultAction:hover:not(:disabled) {
+    background: var(--color-1);
+}
+
+.resultAction:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Llevar al tablero: la burbuja y, a su derecha, un botón por tipo. */
+
+.agentRow {
+    align-self: flex-start;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: 100%;
+}
+
+.agentRow .bubble {
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: none;
+}
+
+.addActions {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    gap: 6px;
+}
+
+.addButton {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.addButton:hover:not(:disabled) {
+    background: var(--color-1);
+}
+
+.addButton:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+.added,
+.added:disabled {
+    border-color: var(--color-success);
+    color: var(--color-success);
+    cursor: default;
+}
+
+/* Insignia en la esquina: el borde blanco la separa del botón. */
+.addedBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-surface);
+    border-radius: 50%;
+    background: var(--color-success);
+    color: #fff;
+}
+
+/* Ya se agregó antes: la misma insignia, en azul y con "de nuevo". */
+.againBadge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    display: grid;
+    place-items: center;
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-surface);
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+}
+
+/* Indicador de "consultando" */
+
+.typing {
+    padding: 12px 16px;
+}
+
+.dots {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.dots i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-secondary);
+    animation: typing 1.2s ease-in-out infinite;
+}
+
+.dots i:nth-child(2) { animation-delay: 0.15s; }
+.dots i:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes typing {
+    0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+    30%           { opacity: 1;   transform: translateY(-3px); }
+}
+
+/* Caja de texto */
+
+.composer {
+    position: relative;
+    margin: 0 12px 12px;
+}
+
+.input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 88px;
+    max-height: 180px;
+    padding: 10px 48px 10px 12px;
+    border: 1.5px solid var(--color-gray-light);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    resize: vertical;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--color-border);
+    box-shadow: 0 0 0 3px var(--color-1);
+}
+
+.send {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    cursor: pointer;
+}
+
+.send:hover:not(:disabled) {
+    background: var(--color-primary-hover);
+}
+
+.send:disabled {
+    background: var(--color-gray);
+    cursor: not-allowed;
+}
+
+.srOnly {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 900px) {
+    .panel {
+        position: fixed;
+        inset: 0;
+        z-index: 40;
+        height: auto;
+        min-height: 0;
+        border: 0;
+        border-radius: 0;
+    }
+
+    .bubble:has(.chartWrap),
+    .bubble:has(.tableWrap) {
+        max-width: 96%;
+    }
+
+    .chartWrap {
+        min-width: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dots i {
+        animation: none;
+        opacity: 0.6;
+    }
+}

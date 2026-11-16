@@ -1,0 +1,293 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: var(--radius-lg);
+  background: var(--color-readonly-bg);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.counter {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-secondary);
+  white-space: nowrap;
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.labelAnterior,
+.labelNuevo {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.labelAnterior {
+  color: var(--color-destructive);
+}
+
+.labelNuevo {
+  color: var(--color-chip-success);
+}
+
+/* Las dos vistas previas son botones: llevan la ficha de la derecha hasta el
+   elemento. El color del borde repite el codigo de la ficha -rojo lo que se
+   sustituye, verde lo que entra- para que el panel y la ficha se lean igual. */
+.previewAnterior,
+.previewNuevo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  font-family: var(--font-family);
+  text-align: left;
+  cursor: pointer;
+  transition: box-shadow 120ms ease;
+}
+
+.previewAnterior {
+  border-color: var(--color-destructive);
+}
+
+.previewNuevo {
+  border-color: var(--color-success);
+}
+
+.previewAnterior:hover:not(:disabled),
+.previewNuevo:hover:not(:disabled) {
+  box-shadow: 0 4px 14px rgba(0, 62, 105, 0.16);
+}
+
+.previewAnterior:focus-visible,
+.previewNuevo:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+.previewAnterior:disabled,
+.previewNuevo:disabled {
+  cursor: default;
+  opacity: 0.7;
+}
+
+.thumb,
+.thumbPlaceholder {
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+}
+
+.thumbPlaceholder {
+  background: var(--color-gray-light);
+}
+
+.previewBody {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.previewTitle {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-black);
+  overflow-wrap: anywhere;
+  /* Una observacion puede llegar a 1000 caracteres: el panel muestra el inicio y
+     el texto completo se lee en la ficha, a la que lleva el mismo clic. */
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: pre-line;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip {
+  padding: 1px 8px;
+  border-radius: var(--radius-full);
+  background: var(--color-1);
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.arrow {
+  align-self: center;
+  color: var(--color-primary);
+}
+
+.sinAnterior {
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+  color: var(--color-secondary);
+}
+
+/* Decision y navegacion */
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.decisionButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Los dos botones van rellenos y con el mismo radio en todos sus estados: el
+   radio no es informacion, y verlo saltar al pulsar se lee como un fallo.
+   Sin decidir, aceptar es el azul claro de la marca y rechazar el rojo; al
+   elegir uno, el aceptado pasa al verde con el que la ficha marca lo vigente y
+   el rechazado se oscurece. El anillo interior distingue "elegido" de "hover". */
+
+.decisionButtons button.accept,
+.decisionButtons button.reject {
+  border: none;
+  border-radius: var(--radius);
+  color: var(--color-white);
+  transition: background-color 120ms ease, box-shadow 120ms ease;
+}
+
+.decisionButtons button.accept {
+  background-color: var(--color-secondary-light);
+}
+
+.decisionButtons button.accept:hover:not(:disabled) {
+  background-color: var(--color-secondary);
+}
+
+.decisionButtons button.accept.elegida {
+  background-color: var(--color-success);
+}
+
+.decisionButtons button.accept.elegida:hover:not(:disabled) {
+  background-color: var(--color-chip-success);
+}
+
+.decisionButtons button.reject {
+  background-color: var(--color-destructive);
+}
+
+.decisionButtons button.reject:hover:not(:disabled),
+.decisionButtons button.reject.elegida {
+  background-color: var(--color-destructive-hover);
+}
+
+.decisionButtons button.elegida {
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.navButton {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.navButton:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.navButton:disabled {
+  background: var(--color-gray);
+  cursor: default;
+}
+
+.navButton:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/* Puntos: de un vistazo, cuantos cambios hay y cuales ya estan decididos. */
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  list-style: none;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  border: 1.5px solid var(--color-gray);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  cursor: pointer;
+}
+
+.dotApproved {
+  border-color: var(--color-success);
+  background: var(--color-success);
+}
+
+.dotRejected {
+  border-color: var(--color-destructive);
+  background: var(--color-destructive);
+}
+
+.dotCurrent {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.dot:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .previewAnterior,
+  .previewNuevo,
+  .navButton,
+  .decisionButtons button.accept,
+  .decisionButtons button.reject {
+    transition: none;
+  }
+}

@@ -1,0 +1,136 @@
+.card {
+  display: flex;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  align-items: flex-start;
+  position: relative;
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-secondary-light);
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.description {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  line-height: 1.35;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.chip-blue {
+  background-color: var(--color-readonly-bg);
+  color: var(--color-primary);
+}
+
+.chip-green {
+  background-color: var(--color-bg-success);
+  color: var(--color-chip-success);
+}
+
+.chip-red {
+  background-color: var(--color-bg-danger);
+  color: var(--color-destructive);
+}
+
+.chip-gray {
+  background-color: var(--color-gray-light);
+  color: var(--color-gray);
+}
+
+.default .checkbox {
+  background-color: transparent;
+}
+
+.success {
+  border-color: var(--color-success);
+  background-color: var(--color-bg-success);
+}
+
+.success .checkbox {
+  border-color: var(--color-success);
+  background-color: var(--color-success);
+}
+
+.success .chip {
+  background-color: var(--color-success);
+  color: var(--color-white);
+}
+
+.danger {
+  border-color: var(--color-destructive);
+  background-color: var(--color-bg-danger);
+}
+
+.danger .checkbox {
+  border-color: var(--color-destructive);
+  background-color: transparent;
+}
+
+.danger .chip {
+  background-color: var(--color-destructive);
+  color: var(--color-white);
+}
+
+.card:focus-within {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.disabled .checkbox {
+  border-color: var(--color-gray-light);
+}

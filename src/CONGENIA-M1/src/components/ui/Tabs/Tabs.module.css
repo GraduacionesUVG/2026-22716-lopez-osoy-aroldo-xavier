@@ -1,0 +1,104 @@
+.tablist {
+  display: flex;
+  gap: 8px;
+  /* La linea gris corre bajo toda la fila; el subrayado de la activa se pinta
+     encima con el mismo grosor, de modo que no se mueve nada al cambiar. */
+  border-bottom: 1.5px solid var(--color-gray-light);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tablist::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  margin-bottom: -1.5px;
+  border: 0;
+  border-bottom: 2.5px solid transparent;
+  background: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-gray);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 120ms ease, border-color 120ms ease;
+}
+
+.tab:hover {
+  color: var(--color-secondary);
+}
+
+.tab:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: -3px;
+  border-radius: var(--radius-sm);
+}
+
+.tabActive {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+  font-weight: 700;
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-gray-light);
+  color: var(--color-black);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+}
+
+.tabActive .count {
+  background: var(--color-1);
+  color: var(--color-primary);
+}
+
+/* Segmentado: botones pegados dentro de un borde, el activo relleno. Sin la
+   linea de abajo, que aqui no separa nada. */
+.segmented {
+  display: inline-flex;
+  gap: 2px;
+  max-width: 100%;
+  padding: 3px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.segmented .tab {
+  padding: 8px 16px;
+  margin-bottom: 0;
+  border-bottom: 0;
+  border-radius: var(--radius-sm);
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.segmented .tab:focus-visible {
+  outline-offset: 2px;
+}
+
+.segmented .tabActive,
+.segmented .tabActive:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab {
+    transition: none;
+  }
+
+  .segmented .tab {
+    transition: none;
+  }
+}

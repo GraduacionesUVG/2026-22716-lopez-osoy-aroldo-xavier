@@ -1,0 +1,147 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Barra de filtros */
+
+.filters {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: start;
+  gap: 12px;
+}
+
+.searchField {
+  min-width: 0;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  background-color: var(--color-surface);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--color-gray);
+}
+
+.searchInput:focus {
+  border-color: var(--color-primary);
+}
+
+/* Cuadrado del alto de los campos, con la lupa: igual que en la tabla de CIE-10.
+   Dos clases para ganarle al padding del tamaño del Button base. */
+.filters .submitButton {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+}
+
+/* Resultados */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.count {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+/* Estados */
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.stateIcon {
+  color: var(--color-primary-light);
+}
+
+.stateTitle {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.stateText {
+  max-width: 46ch;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
+.stateEmpty .stateIcon,
+.stateEmpty .stateTitle {
+  color: var(--color-gray);
+}
+
+.stateError .stateTitle {
+  color: var(--color-destructive);
+}
+
+.stateError .stateIcon {
+  color: var(--color-destructive);
+}
+
+/* Esqueletos de carga: mismo alto que una card real, para que la rejilla no
+   pegue un salto cuando llegan los datos. */
+
+.skeleton {
+  height: 172px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    100deg,
+    var(--color-surface) 30%,
+    var(--color-gray-light) 50%,
+    var(--color-surface) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
+
+  /* En una sola columna, la lupa ocupa todo el ancho: más fácil de tocar. */
+  .filters .submitButton {
+    width: 100%;
+  }
+}

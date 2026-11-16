@@ -1,0 +1,33 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-full);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+/* Azul informativo: la adenda espera turno, todavia no ha pasado nada.
+   El ambar de `.noticePending` queda para los avisos de cabecera, que
+   interrumpen al medico; un badge de listado no interrumpe a nadie. */
+.pending {
+  border-color: var(--color-2);
+  background-color: var(--color-1);
+  color: var(--color-primary);
+}
+
+.approved {
+  border-color: var(--color-success);
+  background-color: var(--color-bg-success);
+  color: var(--color-chip-success);
+}
+
+.rejected {
+  border-color: var(--color-destructive);
+  background-color: var(--color-bg-danger);
+  color: var(--color-destructive);
+}

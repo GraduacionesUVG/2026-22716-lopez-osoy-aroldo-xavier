@@ -1,0 +1,32 @@
+{
+  "name": "congenia-cie10",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.18.0",
+  "scripts": {
+    "dev": "tsx index.ts",
+    "evaluate:cie10": "tsx src/commands/evaluate-cie10.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "test": "node --import tsx --test test/*.test.ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1145.0",
+    "@aws-sdk/client-s3vectors": "^3.1152.0",
+    "csv-parser": "^3.2.1",
+    "dotenv": "^17.4.2",
+    "openai": "^7.1.0",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "0.5.10",
+    "@types/node": "^26.1.2",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.1",
+    "typescript": "^7.0.2"
+  }
+}

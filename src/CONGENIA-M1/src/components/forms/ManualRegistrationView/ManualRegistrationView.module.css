@@ -1,0 +1,145 @@
+/* Mismo reparto que PatientSearchView: titulo sobre el azul, formulario en la
+   tarjeta blanca. Se repiten las reglas del hero en vez de importarlas para
+   que cada pantalla pueda ajustar su texto sin tocar la otra. */
+.hero {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+    color: var(--color-white);
+}
+
+.title {
+    font-family: var(--font-family);
+    font-size: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-white);
+}
+
+.subtitle {
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: 1.5;
+    color: var(--color-white);
+}
+
+.backLink {
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 4px;
+    border: none;
+    background: transparent;
+    color: var(--color-white);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* Datos que vienen de la busqueda: se leen, no se editan. Adentro usa la
+   misma grilla etiqueta | valor que .resumen. */
+.origen {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: var(--color-readonly-bg);
+}
+
+.motivo {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: var(--color-bg-warning);
+    color: #7a3d00;
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.origenNota {
+    margin: 0;
+    padding-top: 8px;
+    border-top: 1px solid #c6d2de;
+    font-size: var(--font-size-xs);
+    color: #3d4b59;
+    overflow-wrap: anywhere;
+}
+
+.resumenTitulo {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    text-align: center;
+}
+
+.resumen {
+    display: grid;
+    grid-template-columns: minmax(0, 140px) minmax(0, 1fr);
+    row-gap: 10px;
+    column-gap: 16px;
+    margin: 0;
+    font-size: var(--font-size-sm);
+}
+
+.resumen dt {
+    color: #3d4b59;
+    font-weight: 500;
+}
+
+.resumen dd {
+    margin: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.confirmacion {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-height: 44px;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.confirmacion input {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    margin: 1px 0 0;
+    accent-color: var(--color-primary);
+}
+
+.acciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+@media (min-width: 900px) {
+    .hero {
+        gap: 14px;
+        text-align: left;
+    }
+
+    .subtitle {
+        max-width: 46ch;
+    }
+
+    .backLink {
+        align-self: flex-start;
+    }
+}
