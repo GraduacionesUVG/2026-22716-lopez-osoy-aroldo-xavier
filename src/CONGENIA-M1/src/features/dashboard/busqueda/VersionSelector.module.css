@@ -1,0 +1,6 @@
+/* El `.wrapper` del Dropdown es width:100%, y a lo ancho del contenido del
+   dashboard el select se veria desproporcionado. */
+.wrapper {
+  max-width: 320px;
+  margin-bottom: 16px;
+}

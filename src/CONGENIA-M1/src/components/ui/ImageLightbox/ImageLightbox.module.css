@@ -1,0 +1,33 @@
+.image {
+  max-width: 100%;
+  /* El alto del overlay menos su padding: sin esto una imagen alta se sale. */
+  max-height: calc(100dvh - 32px);
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.close {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.close:hover {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: 2px;
+}

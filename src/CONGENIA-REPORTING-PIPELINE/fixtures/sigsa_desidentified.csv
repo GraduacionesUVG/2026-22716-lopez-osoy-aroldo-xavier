@@ -1,0 +1,3 @@
+consulta_id,fecha,turno,clinica,tipo_clinica,servicio,departamento_hospitalario,sexo,edad_dias,edad_meses,edad_anios,pueblo,comunidad_linguistica,departamento,municipio,diagnostico,cie10,cie10_descripcion,nuevo,primera,reconsulta,interconsulta,emergencia,dataset_version
+sigsa_000001,2025-06-12,MATUTINO,Consulta Externa,Hospitalaria,PEDIATRIA,Pediatria,F,0,0,5,Maya,Qeqchi,Alta Verapaz,Coban,Infeccion urinaria,N39.0,Infeccion de vias urinarias,true,true,false,false,false,sigsa-fixture
+sigsa_000002,2025-06-13,VESPERTINO,Consulta Externa,Hospitalaria,GENETICA,Genetica,M,0,0,7,Maya,Qeqchi,Alta Verapaz,San Pedro Carcha,Labio y paladar hendido,Q37.9,Paladar hendido con labio leporino,true,false,true,false,false,sigsa-fixture

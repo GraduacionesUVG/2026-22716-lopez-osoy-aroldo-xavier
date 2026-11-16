@@ -1,0 +1,168 @@
+/* Solo overrides de CSS sobre el tema keycloak.v2 (sin tocar templates .ftl)
+   para que el upgrade de Keycloak no rompa nada. Colores/fuente/logo calcados
+   de ProjectUVG/CONGENIA-M1/src/index.css y del look real de la app
+   (fondo --color-secondary detras de una tarjeta blanca, logo arriba). */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+:root {
+  --pf-v5-global--primary-color--100: #003E69;
+  --pf-v5-global--primary-color--200: #00234A;
+  --pf-v5-global--link--Color: #003E69;
+  --pf-v5-global--link--Color--hover: #00234A;
+  --pf-v5-global--FontFamily--text: 'Montserrat', sans-serif;
+  --pf-v5-global--FontFamily--heading: 'Montserrat', sans-serif;
+  --pf-v5-global--BorderRadius--sm: 10px;
+  --pf-v5-global--BorderRadius--lg: 15px;
+}
+
+/* !important: el tema base trae una variante oscura que se activa sola con
+   prefers-color-scheme y pisa selectores normales. CONGENIA no tiene modo
+   oscuro (ver CONGENIA-M1/src/index.css), asi que el login se mantiene igual
+   sin importar el OS/navegador de quien inicia sesion. */
+body,
+.pf-v5-c-login {
+  background-color: #45779E !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* El grid de keycloak.v2 pone "header" y "main" como columnas lado a lado en
+   pantallas anchas (asi se ve el nombre del realm por defecto). Sobreescribir
+   solo grid-template-columns/areas no bastaba: el tema base trae otras reglas
+   de grid atadas a sus propios breakpoints (column-gap, etc.) que en Firefox
+   dejaban la tarjeta corrida ~80px a la izquierda en anchos intermedios
+   (500-1024px), aunque en Chrome se veia bien. display:flex en vez de grid
+   evita pelear con esas reglas: con un solo eje y align-items:center no hay
+   tracks ni gaps heredados que puedan quedar mal calculados. */
+.pf-v5-c-login__container {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+a {
+  color: #003E69;
+}
+
+a:hover {
+  color: #00234A;
+}
+
+/* Header y main comparten ancho para leerse como una sola tarjeta: el header
+   aporta las esquinas redondeadas de arriba, main las de abajo. La sombra va
+   solo en main (una sola vez) porque con la misma sombra en los dos se veia
+   una linea gris justo en la union (blur de ambas sombras solapandose). */
+#kc-header,
+.pf-v5-c-login__main {
+  width: min(420px, 90vw);
+  /* El tema base trae align-self:start en .pf-v5-c-login__main (para su
+     layout de grid original); sin este override queda pegado a la izquierda
+     del contenedor flex en vez de centrado, aunque el header (que no trae
+     ese align-self) si se centraba bien. */
+  align-self: center;
+}
+
+#kc-header {
+  background-color: #FFF !important;
+  border-radius: 15px 15px 0 0;
+  padding: 28px 0 4px;
+}
+
+.pf-v5-c-login__main {
+  background-color: #FFF !important;
+  border-radius: 0 0 15px 15px;
+  box-shadow: 0 12px 32px rgba(0, 11, 37, 0.25);
+  /* Recorta la sombra para que no se dibuje por encima del borde superior
+     (solo abajo/lados), y el -1px cierra el hairline de redondeo de subpixel
+     que el grid deja entre el borde de abajo de #kc-header y este elemento. */
+  clip-path: inset(0 -40px -40px -40px);
+  margin-top: -1px;
+}
+
+.pf-v5-c-login__main-header {
+  text-align: center;
+}
+
+.pf-v5-c-login__main-header .pf-v5-c-title {
+  color: #003E69 !important;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+#kc-form-login .pf-v5-c-form__group,
+#kc-form-buttons {
+  margin-bottom: 20px;
+}
+
+.pf-v5-c-form-control {
+  border-radius: 6px;
+  border-color: #8AB3D6;
+  background-color: #FFF !important;
+}
+
+/* pf-v5-c-form-control es un <span> que envuelve al <input> real (no es el
+   input); el color hay que ponerlo en el input mismo o el texto que se
+   escribe se queda con el gris por defecto de PatternFly. */
+.pf-v5-c-login__main input {
+  color: #1E1E1E !important;
+}
+
+label,
+.pf-v5-c-form__label-text {
+  color: #1E1E1E !important;
+}
+
+.pf-v5-c-button.pf-m-primary {
+  background-color: #003E69;
+  border-radius: 10px;
+}
+
+.pf-v5-c-button.pf-m-primary:hover,
+.pf-v5-c-button.pf-m-primary:focus {
+  background-color: #00234A;
+}
+
+/* Boton de mostrar/ocultar contraseña, con la misma paleta que el resto del
+   formulario en vez del gris por defecto. */
+.pf-v5-c-login__main .pf-v5-c-button.pf-m-control {
+  color: #003E69 !important;
+  border-color: #8AB3D6;
+  background-color: #FFF !important;
+}
+
+.pf-v5-c-login__main .pf-v5-c-button.pf-m-control:hover,
+.pf-v5-c-login__main .pf-v5-c-button.pf-m-control:focus {
+  color: #00234A !important;
+  background-color: #E2E8F0 !important;
+}
+
+/* En movil, .pf-v5-c-login viene centrado en un contenedor a 100vh. Cuando
+   se abre el teclado en iOS, el visual viewport se achica pero el layout
+   flex sigue centrando contra la altura completa (que ya no es la visible),
+   asi que la tarjeta "salta" y queda descuadrada. Se cambia a flujo normal
+   con padding arriba: sin altura fija que recalcular, no hay nada que salte
+   cuando aparece el teclado, y la pagina puede hacer scroll si hace falta. */
+@media (max-width: 480px) {
+  .pf-v5-c-login {
+    display: block !important;
+    min-height: 0 !important;
+    padding: 32px 16px !important;
+  }
+}
+
+/* Logo dentro de la tarjeta (fondo blanco), mismo lockup navy que usa
+   BrandCard en la app. keycloak.v2 renderiza el displayName del realm como
+   texto en este div; se oculta y se pone el logo como background-image. */
+#kc-header-wrapper {
+  font-size: 0;
+  color: transparent;
+  display: block;
+  width: 200px;
+  height: 68px;
+  margin: 0 auto;
+  background-image: url('../img/logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}

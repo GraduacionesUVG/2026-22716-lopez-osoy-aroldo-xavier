@@ -1,0 +1,21 @@
+{
+  "name": "congenia-graduation-delivery",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Reproducible local environment for the CONGENIA AI module graduation delivery",
+  "scripts": {
+    "start": "docker compose up -d --build",
+    "stop": "docker compose down",
+    "status": "docker compose ps",
+    "logs": "docker compose logs -f",
+    "health": "bash scripts/health-check.sh",
+    "test": "npm run test:frontend && npm run test:api && npm run test:cie10 && npm run test:reporting",
+    "test:frontend": "npx --yes pnpm@11.23.0 --dir CONGENIA-M1 test",
+    "test:api": "npm --prefix CONGENIA-M1-SERVER test",
+    "test:cie10": "npx --yes pnpm@11.18.0 --dir CONGENIA-CIE10 test",
+    "test:reporting": "npx --yes pnpm@11.18.0 --dir CONGENIA-REPORTING-PIPELINE test"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

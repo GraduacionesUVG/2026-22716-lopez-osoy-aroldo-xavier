@@ -1,0 +1,1005 @@
+/* Modal de rechazo */
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modalTitle {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.modalText {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-black);
+}
+
+.modalActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* Revisión por lote */
+
+.batchReview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+/* Filtros: confianza, descripción médica, buscar y limpiar. */
+.filtrosLote {
+  display: grid;
+  grid-template-columns: minmax(180px, 220px) 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+}
+
+/* La "x" va dentro del campo, a la derecha; el texto le deja espacio. */
+.filtroBuscador {
+  position: relative;
+  min-width: 0;
+}
+
+.filtroBuscador .filtroTexto {
+  padding-right: 40px;
+}
+
+.filtroBorrar {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  display: inline-grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-gray);
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.filtroBorrar:hover {
+  background: var(--color-1);
+  color: var(--color-primary);
+}
+
+.filtroBorrar:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+/* Cuadrados del alto de los campos. Buscar, relleno como el botón de la
+   búsqueda de fichas; limpiar, solo con el borde. */
+.botonBuscar,
+.botonLimpiar {
+  display: inline-grid;
+  width: 46px;
+  height: 46px;
+  place-items: center;
+  border-radius: var(--radius);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.botonBuscar {
+  border: none;
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.botonBuscar:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.botonBuscar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.botonLimpiar {
+  border: 1.5px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+}
+
+/* El mismo hover que "Cambiar" (Button ghost): relleno celeste e ícono blanco. */
+.botonLimpiar:hover {
+  border-color: var(--color-secondary-light);
+  background: var(--color-secondary-light);
+  color: var(--color-white);
+}
+
+.botonBuscar:focus-visible,
+.botonLimpiar:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Mismas medidas que el buscador de la bandeja de adendas. */
+.filtroCampo {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  color: var(--color-black);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.filtroCampo:focus {
+  border-color: var(--color-primary);
+}
+
+.filtroTexto::placeholder {
+  color: var(--color-gray);
+}
+
+/* El aviso de lo que falta, a lo ancho, con la tuerca a la derecha. */
+.batchToolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.avisoLote {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+}
+
+.avisoLote > * {
+  flex: 1;
+}
+
+.avisoLote > .completeBanner {
+  flex: 0 1 auto;
+}
+
+.tuerca,
+.iconoBoton {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius-full);
+  color: var(--color-primary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.tuerca {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+}
+
+.tuerca:hover,
+.tuerca[aria-expanded='true'] {
+  border-color: var(--color-primary);
+  background: var(--color-1);
+}
+
+/* Sin borde propio: el ícono "i" ya es un círculo, y con borde se veía doble. */
+.iconoBoton {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+}
+
+.iconoBoton:hover {
+  background: var(--color-1);
+}
+
+/* El "i" con su detalle abierto debajo. */
+.iconoBotonActivo,
+.iconoBotonActivo:hover {
+  background: var(--color-primary);
+  color: var(--color-white);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.tuerca:focus-visible,
+.iconoBoton:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Punto de aviso en el "i": la opción trae información faltante. */
+.puntoAviso {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--color-white);
+  border-radius: var(--radius-full);
+  background: var(--color-warning);
+}
+
+/* Globo: `popover` nativo, en la capa superior. La posición la pone el componente. */
+.globo {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  max-width: calc(100vw - 16px);
+  padding: 14px 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-white);
+  color: var(--color-black);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.16);
+}
+
+.globo:popover-open {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.globoTexto {
+  color: var(--color-gray);
+}
+
+/* Cada ajuste de la tuerca, separado del siguiente por una raya. */
+.ajuste {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ajuste + .ajuste {
+  padding-top: 12px;
+  border-top: 1.5px solid var(--color-gray-light);
+}
+
+.iconoEnTexto {
+  vertical-align: -2px;
+}
+
+/* Teclado y tuerca, juntos a la derecha del aviso. */
+.herramientas {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.atajos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.atajo {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  align-items: center;
+  gap: 10px;
+}
+
+.atajo dt {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.tecla {
+  display: inline-block;
+  min-width: 24px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-border);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-primary);
+  font-family: var(--font-family);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+/* Interruptor: la etiqueta a la izquierda y la barra a la derecha. */
+.interruptor {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.interruptorEtiqueta {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+/* El checkbox real queda invisible encima de la barra: sigue recibiendo el
+   clic, el teclado y el foco. */
+.interruptorInput {
+  position: absolute;
+  right: 0;
+  width: 40px;
+  height: 22px;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.interruptorBarra {
+  position: relative;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  background: var(--color-gray-light);
+  transition: background-color 0.2s ease;
+}
+
+.interruptorBarra::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-full);
+  background: var(--color-white);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+}
+
+.interruptorInput:checked + .interruptorBarra {
+  background: var(--color-primary);
+}
+
+.interruptorInput:checked + .interruptorBarra::after {
+  transform: translateX(18px);
+}
+
+.interruptorInput:focus-visible + .interruptorBarra {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interruptorBarra,
+  .interruptorBarra::after {
+    transition: none;
+  }
+}
+
+/* Detalle del "i": una fila propia debajo, a todo lo ancho, con las secciones
+   lado a lado. La raya azul a la izquierda lo ata a la fila de arriba. */
+.batchTable .filaDetalle td {
+  padding: 0;
+  background: var(--color-bg);
+}
+
+.detalle {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px 28px;
+  padding: 14px 48px 16px 16px;
+  border-left: 4px solid var(--color-primary);
+  font-size: var(--font-size-xs);
+  line-height: 1.45;
+}
+
+.detalleCabecera {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 110px;
+}
+
+.detalleCodigo {
+  font-size: var(--font-size-base);
+  color: var(--color-primary);
+}
+
+.detalleSeccion {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.detalleSeccion .detalleEtiqueta + p + .detalleEtiqueta {
+  margin-top: 8px;
+}
+
+.detalleAvisos {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.detalleCerrar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: none;
+  border-radius: var(--radius-full);
+  background: transparent;
+  color: var(--color-gray);
+  cursor: pointer;
+}
+
+.detalleCerrar:hover {
+  background: var(--color-1);
+  color: var(--color-primary);
+}
+
+.detalleCerrar:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+}
+
+.detalleEtiqueta {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: var(--color-gray);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Carga y vacío: copia de .state / .skeleton de BusquedaView.module.css. */
+.estadoVacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.estadoVacioIcono {
+  color: var(--color-gray);
+}
+
+.estadoVacioTitulo {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-gray);
+}
+
+.estadoVacioTexto {
+  max-width: 46ch;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
+.esqueletos {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.esqueleto {
+  height: 88px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    100deg,
+    var(--color-surface) 30%,
+    var(--color-gray-light) 50%,
+    var(--color-surface) 70%
+  );
+  background-size: 300% 100%;
+  animation: cie10Shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes cie10Shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esqueleto {
+    animation: none;
+  }
+}
+
+.panelCargando {
+  opacity: 0.55;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+.batchTableWrap {
+  overflow: auto;
+  border: 1px solid var(--color-gray);
+  border-radius: 6px;
+  background: var(--color-white);
+}
+
+/* `fixed`: los anchos los ponen las columnas, no el contenido. Con `auto`, el
+   nombre largo de una sugerencia (que va en una línea) ensanchaba la tabla y
+   empujaba la columna de acciones fuera de la vista. */
+.batchTable {
+  width: 100%;
+  min-width: 900px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: var(--font-size-xs);
+}
+
+.batchTable th,
+.batchTable td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-gray-light);
+  vertical-align: top;
+  text-align: left;
+}
+
+.batchTable th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-white);
+  color: var(--color-black);
+  font-weight: 700;
+}
+
+.colDiagnostico {
+  width: 24%;
+}
+
+/* Propia y no `.colEstado`: esa es del historial de la vista anterior y centra el texto. */
+.colEstadoLote {
+  width: 120px;
+}
+
+.colAccionesLote {
+  width: 230px;
+}
+
+.colCheck {
+  width: 44px;
+  text-align: center;
+}
+
+.batchTable td.colCheck {
+  vertical-align: middle;
+}
+
+.casilla {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.casilla:disabled {
+  cursor: not-allowed;
+}
+
+/* Fila marcada para "Aceptar seleccionadas": el celeste más claro de la marca. */
+.filaMarcada td {
+  background: var(--color-1);
+}
+
+/* Fila sin código: texto gris, sin caja. El color ya lo pone la pastilla de Estado. */
+.sinCodigo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sinCodigoTitulo {
+  font-weight: 600;
+  color: var(--color-gray);
+}
+
+/* Fila activa del teclado: borde azul por dentro, sin mover nada de lugar. */
+.filaTeclado {
+  outline: none;
+}
+
+.filaTeclado:focus-visible > td {
+  box-shadow: inset 0 2px 0 var(--color-primary), inset 0 -2px 0 var(--color-primary);
+}
+
+.filaTeclado:focus-visible > td:first-child {
+  box-shadow: inset 2px 2px 0 var(--color-primary), inset 0 -2px 0 var(--color-primary);
+}
+
+.filaTeclado:focus-visible > td:last-child {
+  box-shadow: inset -2px 2px 0 var(--color-primary), inset 0 -2px 0 var(--color-primary);
+}
+
+.filaDecidida td {
+  background: var(--color-bg);
+}
+
+.diagnosisCell {
+  min-width: 200px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.secondaryText {
+  display: block;
+  margin-top: 3px;
+  color: var(--color-gray);
+  line-height: 1.35;
+}
+
+/* Opciones de una línea */
+
+.opciones {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Sin relleno al marcar: el radio y el borde azul bastan. Las demás quedan en gris. */
+.opcion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 3px 6px 3px 8px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  color: var(--color-gray);
+}
+
+.opcionMarcada {
+  border-color: var(--color-primary);
+  color: var(--color-black);
+}
+
+.opcionLabel {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.opcionLabel input {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-primary);
+}
+
+.opcionCodigo {
+  flex: 0 0 auto;
+  min-width: 52px;
+  font-weight: 700;
+}
+
+.opcionNombre {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Confianza: check, alerta o x en los colores de éxito, aviso y error de la ficha. */
+.confianza {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+/* Globo al pasar el mouse: "Confianza alta", "media" o "baja". */
+.confianza[data-tooltip] {
+  position: relative;
+}
+
+.confianza[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  z-index: 5;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+/* Con el detalle apagado: el triángulo del código fuera del catálogo
+   institucional, con su aviso al pasar el mouse. El texto es largo, así que el
+   globo se envuelve y se alinea a la derecha (está al borde de la columna). */
+.opcionAviso {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--color-warning);
+}
+
+.opcionAviso[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  z-index: 5;
+  width: 260px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: var(--color-primary);
+  color: var(--color-white);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: normal;
+  pointer-events: none;
+}
+
+.confianzaAlta {
+  color: var(--color-success);
+}
+
+.confianzaMedia {
+  color: var(--color-warning);
+}
+
+.confianzaBaja {
+  color: var(--color-destructive);
+}
+
+/* Estado de la fila: pastillas como la de "¡Todo completo!" de la ficha. */
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border: 1.5px solid transparent;
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.estadoPendiente {
+  border-color: var(--color-gray-light);
+  color: var(--color-gray);
+}
+
+.estadoSinCodigo {
+  border-color: var(--color-warning);
+  background: var(--color-bg-warning);
+  color: var(--color-chip-warning);
+}
+
+.estadoAceptado {
+  border-color: var(--color-success);
+  background: var(--color-bg-success);
+  color: var(--color-chip-success);
+}
+
+.estadoCorregido {
+  border-color: var(--color-2);
+  background: var(--color-1);
+  color: var(--color-primary);
+}
+
+/* Fila ya decidida */
+
+.resultado {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.accionesFila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Mismo pie que la búsqueda y las adendas: el conteo centrado bajo la lista. */
+.batchFooter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.batchCount {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+.batchPagination {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--font-size-sm);
+}
+
+.clausePanel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 0;
+  border-top: 1.5px solid var(--color-gray-light);
+}
+
+/* Copia de .completeBanner / .completeIcon de RegistrationOrchestratorView.module.css:
+   el mismo "¡Todo completo!" que la ficha clínica. */
+.completeBanner {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--color-success);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-success);
+  color: var(--color-chip-success);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.completeIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--color-success);
+  border-radius: 9999px;
+}
+
+/* "Aceptar seleccionadas" a la izquierda y "Confirmar" a la derecha. */
+.clauseAcciones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Buscador del catálogo, dentro del modal */
+
+.comboboxCampo {
+  position: relative;
+}
+
+.comboboxLupa {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  color: var(--color-gray);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.comboboxCampo:focus-within .comboboxLupa {
+  color: var(--color-primary);
+}
+
+/* Dos clases: `.input` del Input base trae su propio padding y podía ganar. */
+.comboboxCampo .comboboxInput {
+  padding-left: 42px;
+}
+
+.comboboxLibre {
+  display: flex;
+}
+
+.comboboxLista {
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-white);
+  list-style: none;
+}
+
+.comboboxOpcion,
+.comboboxEstado {
+  padding: 8px 12px;
+  font-size: var(--font-size-sm);
+  line-height: 1.35;
+}
+
+.comboboxOpcion {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  cursor: pointer;
+}
+
+.comboboxOpcion + .comboboxOpcion {
+  border-top: 1px solid var(--color-gray-light);
+}
+
+.comboboxOpcionActiva {
+  background: var(--color-1);
+}
+
+.comboboxDescripcion {
+  flex: 1 1 200px;
+}
+
+.comboboxExterno {
+  color: var(--color-chip-warning);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.comboboxEstado {
+  color: var(--color-gray);
+}
+
+@media (max-width: 720px) {
+  .batchToolbar {
+    align-items: flex-start;
+  }
+
+  /* El select arriba a todo lo ancho; el texto, buscar y limpiar debajo. */
+  .filtrosLote {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .filtrosLote > select {
+    grid-column: 1 / -1;
+  }
+
+  .clauseAcciones > * {
+    width: 100%;
+  }
+}

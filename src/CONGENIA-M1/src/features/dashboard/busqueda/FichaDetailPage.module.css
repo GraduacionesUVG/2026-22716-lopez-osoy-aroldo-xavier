@@ -1,0 +1,89 @@
+/* Boton redondo de regresar, en la ranura de accion del topbar. */
+.backButton {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-primary);
+  color: var(--color-white);
+  cursor: pointer;
+  transition: background 120ms ease;
+}
+
+.backButton:hover {
+  background: var(--color-primary-hover);
+}
+
+.backButton:focus-visible {
+  outline: 3px solid var(--color-primary-light);
+  outline-offset: 2px;
+}
+
+/* Estados de carga y error, dentro del area de contenido del dashboard. */
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton {
+  height: 96px;
+  border: 1.5px solid var(--color-gray-light);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(
+    100deg,
+    var(--color-surface) 30%,
+    var(--color-gray-light) 50%,
+    var(--color-surface) 70%
+  );
+  background-size: 300% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 150% 0; }
+  to   { background-position: -50% 0; }
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 56px 24px;
+  text-align: center;
+}
+
+.stateIcon {
+  color: var(--color-destructive);
+}
+
+.stateTitle {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-destructive);
+}
+
+.stateText {
+  max-width: 46ch;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.5;
+}
+
+.stateActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

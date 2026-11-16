@@ -1,0 +1,97 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  background-color: var(--color-surface);
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.input::placeholder {
+  color: var(--color-gray);
+}
+
+.input:focus {
+  border-color: var(--color-primary);
+}
+
+.readonly {
+  background-color: var(--color-readonly-bg);
+  border-color: var(--color-secondary-light);
+  color: var(--color-secondary);
+  cursor: default;
+}
+
+.readonly:focus {
+  border-color: var(--color-secondary-light);
+}
+
+.inputError {
+  border-color: var(--color-destructive);
+}
+
+.inputError:focus {
+  border-color: var(--color-destructive);
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs);
+  color: var(--color-destructive);
+  font-weight: 500;
+}
+
+.hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+/* TextArea: la altura la pone el componente segun el contenido.
+   `flex-shrink: 0` porque con `overflow: hidden` su alto minimo como item flex es
+   0: dentro de un modal con alto maximo era lo unico que se encogia y quedaba
+   aplastado en una linea. */
+.textarea {
+  display: block;
+  flex-shrink: 0;
+  resize: none;
+  overflow: hidden;
+  line-height: 1.45;
+}
+
+/* Solo en vertical: ensancharlo desborda la tarjeta del modal (igual que
+   .reasonInput de la ficha). */
+.textareaResizable {
+  resize: vertical;
+  overflow: auto;
+  min-height: 96px;
+}
+
+.footerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.counter {
+  flex-shrink: 0;
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}

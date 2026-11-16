@@ -1,0 +1,185 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.helper {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+.canvasWrapper {
+  position: relative;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  overflow: hidden;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.baseline {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 18px;
+  height: 1px;
+  background-color: var(--color-primary-light);
+  pointer-events: none;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.clearButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  padding: 6px 10px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid var(--color-destructive);
+  background-color: var(--color-bg-danger);
+  color: var(--color-destructive);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.clearButton:hover:not(:disabled) {
+  background-color: var(--color-destructive);
+  color: var(--color-white);
+}
+
+.clearButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.clearIcon {
+  display: inline-flex;
+}
+
+.success {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-chip-success);
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.successIcon {
+  width: 16px;
+  height: 16px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-success);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-chip-success);
+}
+
+/* Pista de firma: encima del lienzo pero sin tapar el toque. */
+.hint {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 8px 16px 22px;
+  pointer-events: none;
+}
+
+.hintSvg {
+  width: 100%;
+  max-width: 260px;
+  flex: 1;
+  min-height: 0;
+  overflow: visible;
+}
+
+.hintStroke {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.35;
+  animation: hint-draw 2.8s linear infinite;
+}
+
+.hintHand {
+  color: var(--color-primary);
+  fill: var(--color-surface);
+  stroke-width: 1.8;
+}
+
+.hintText {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-primary);
+  opacity: 0.8;
+}
+
+/* 70 % trazando, igual que los keyTimes de la mano; el resto, pausa y desvanece. */
+@keyframes hint-draw {
+  0%   { stroke-dashoffset: 1; opacity: 0.35; }
+  70%  { stroke-dashoffset: 0; opacity: 0.35; }
+  90%  { stroke-dashoffset: 0; opacity: 0.35; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hintStroke {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+.disabled .canvasWrapper {
+  border-color: var(--color-secondary-light);
+  background-color: var(--color-readonly-bg);
+}
+
+.disabled .canvas {
+  cursor: not-allowed;
+}
+
+.disabled .baseline {
+  background-color: var(--color-gray-light);
+}

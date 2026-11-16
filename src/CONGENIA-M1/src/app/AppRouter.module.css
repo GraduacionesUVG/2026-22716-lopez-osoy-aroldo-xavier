@@ -1,0 +1,10 @@
+/*
+ * Los 480px vivian en `#root` y encajonaban toda la aplicacion. El dashboard
+ * necesita la pantalla entera, asi que la restriccion baja hasta aqui: es de la
+ * ficha, no del documento.
+ */
+.fichaShell {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100dvh;
+}

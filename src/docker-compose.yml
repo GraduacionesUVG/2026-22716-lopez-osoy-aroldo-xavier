@@ -1,0 +1,422 @@
+﻿# =============================================================================
+# CONGENIA - Stack de Orquestación Local
+# =============================================================================
+# Este archivo orquesta los servicios principales del proyecto:
+# - Base de datos PostgreSQL
+# - API Backend (CONGENIA-M1-SERVER)
+# - Frontend (CONGENIA-M1)
+# - RabbitMQ (broker de mensajería)
+# - PDF Worker (consentimiento -> PDF)
+#
+# Uso:
+#   docker compose up -d          # Levantar todos los servicios
+#   docker compose logs -f        # Ver logs en tiempo real
+#   docker compose down           # Detener servicios
+#   docker compose down -v        # Detener y eliminar volúmenes
+# =============================================================================
+
+services:
+
+  # ── Base de datos PostgreSQL ───────────────────────────────────────────────
+  postgres:
+    image: postgres:16-alpine
+    container_name: congenia_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-congenia}
+      POSTGRES_USER: ${POSTGRES_USER:-congenia}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD es requerido}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - congenia_pgdata:/var/lib/postgresql/data
+      - ./CONGENIA-M1-SERVER/db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-congenia} -d ${POSTGRES_DB:-congenia}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    networks:
+      - congenia_network
+
+  # Applies every pending numbered migration to both new and existing volumes.
+  migrate:
+    build:
+      context: ./CONGENIA-M1-SERVER/db
+      dockerfile: migrate/Dockerfile
+    environment:
+      PGHOST: postgres
+      PGPORT: 5432
+      PGDATABASE: ${POSTGRES_DB:-congenia}
+      PGUSER: ${POSTGRES_USER:-congenia}
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      # Login del rol congenia_app (06_audit_trail.sql), que usan api y pdf_worker.
+      APP_DB_PASSWORD: ${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD es requerido}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - congenia_network
+
+  # ── API Backend ────────────────────────────────────────────────────────────
+  # OAuth 2.0 / OIDC provider for external-system integration.
+  keycloak:
+    build:
+      context: ./keycloak
+      dockerfile: Dockerfile
+    container_name: congenia_keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN_USER:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:?KEYCLOAK_ADMIN_PASSWORD es requerido}
+      KEYCLOAK_SADC_CLIENT_SECRET: ${KEYCLOAK_SADC_CLIENT_SECRET:?KEYCLOAK_SADC_CLIENT_SECRET es requerido}
+      KEYCLOAK_MEDICO_INITIAL_PASSWORD: ${KEYCLOAK_MEDICO_INITIAL_PASSWORD:?KEYCLOAK_MEDICO_INITIAL_PASSWORD es requerido}
+      CONGENIA_PUBLIC_URL: http://localhost:${FRONTEND_PORT:-8080}
+    ports:
+      - "${KEYCLOAK_PORT:-8082}:8080"
+    networks:
+      - congenia_network
+
+  # Temporary integration/session cache.
+  redis:
+    image: redis:${REDIS_VERSION:-7.2-alpine}
+    container_name: congenia_redis
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:?REDIS_PASSWORD es requerido}"]
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD es requerido}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - congenia_redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - congenia_network
+
+  api:
+    build:
+      context: ./CONGENIA-M1-SERVER
+      dockerfile: Dockerfile
+    container_name: congenia_api
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      APP_ENV: ${APP_ENV:-development}
+      PORT: 3000
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-congenia}
+      # Rol sin UPDATE/DELETE sobre la bitacora; el propietario solo migra.
+      POSTGRES_USER: ${POSTGRES_APP_USER:-congenia_app}
+      POSTGRES_PASSWORD: ${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD es requerido}
+      APP_ENCRYPTION_KEY: ${APP_ENCRYPTION_KEY:?APP_ENCRYPTION_KEY es requerido}
+      PATIENT_NAME_TOKEN_HMAC_KEY: ${PATIENT_NAME_TOKEN_HMAC_KEY:-0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_VHOST: ${RABBITMQ_DEFAULT_VHOST:-/}
+      REDIS_URL: redis://:${REDIS_PASSWORD}@redis:6379
+      AUTH_INTEGRATION_MODE: ${AUTH_INTEGRATION_MODE:-hybrid}
+      OIDC_ISSUER_URL: ${OIDC_ISSUER_URL:-http://keycloak:8080/realms/congenia}
+      OIDC_ISSUER_URLS: ${OIDC_ISSUER_URLS:-http://localhost:8082/realms/congenia,http://keycloak:8080/realms/congenia}
+      OIDC_JWKS_URL: ${OIDC_JWKS_URL:-http://keycloak:8080/realms/congenia/protocol/openid-connect/certs}
+      OIDC_AUDIENCE: ${OIDC_AUDIENCE:-congenia-api}
+      OIDC_WEB_CLIENT_ID: ${OIDC_WEB_CLIENT_ID:-congenia-web}
+      FRONTEND_BASE_URL: ${FRONTEND_BASE_URL:-http://localhost:8080}
+      FRONTEND_FICHA_ROUTE: ${FRONTEND_FICHA_ROUTE:-/}
+      SESSION_EXPIRY_MINUTES: ${SESSION_EXPIRY_MINUTES:-60}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:5173}
+      S3_ENDPOINT: ${S3_ENDPOINT:-http://seaweedfs:8333}
+      S3_PUBLIC_ENDPOINT: ${S3_PUBLIC_ENDPOINT:-http://localhost:8333}
+      S3_BUCKET: ${S3_BUCKET:-congenia-docs}
+      S3_REGION: ${S3_REGION:-us-east-1}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-congenia}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-congenia}
+      S3_PRESIGN_EXPIRY_SECONDS: ${S3_PRESIGN_EXPIRY_SECONDS:-300}
+      S3_UPLOAD_MAX_BYTES: ${S3_UPLOAD_MAX_BYTES:-10485760}
+      CIE10_REVIEW_EXPORT_S3_PREFIX: ${CIE10_REVIEW_EXPORT_S3_PREFIX:-}
+      REPORTING_DATABASE_APP_URL: ${REPORTING_DATABASE_APP_URL:-}
+      REPORTING_DATABASE_AGENT_READONLY_URL: ${REPORTING_DATABASE_AGENT_READONLY_URL:-}
+      REPORTING_STATEMENT_TIMEOUT_MS: ${REPORTING_STATEMENT_TIMEOUT_MS:-5000}
+      REPORTING_MCP_TOKEN: ${REPORTING_MCP_TOKEN:-}
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_MODEL: ${LLM_MODEL:-gpt-6-luna}
+      LLM_REASONING_EFFORT: ${LLM_REASONING_EFFORT:-low}
+      REPORTING_CONVERSATION_TTL_SECONDS: ${REPORTING_CONVERSATION_TTL_SECONDS:-1800}
+      REPORTING_CONVERSATION_MAX_TURNS: ${REPORTING_CONVERSATION_MAX_TURNS:-8}
+      AGENT_PROMPT_VERSION: ${AGENT_PROMPT_VERSION:-agent-reporting-v1}
+      DATASET_VERSION: ${DATASET_VERSION:-unset}
+      REPORTING_SCHEMA_VERSION: ${REPORTING_SCHEMA_VERSION:-reporting-v1}
+    ports:
+      - "${API_PORT:-3000}:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - congenia_network
+
+  # ── Frontend ───────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./CONGENIA-M1
+      dockerfile: Dockerfile
+      args:
+        VITE_OIDC_AUTHORITY: ${VITE_OIDC_AUTHORITY:-}
+        VITE_OIDC_CLIENT_ID: ${VITE_OIDC_CLIENT_ID:-}
+        VITE_OIDC_REDIRECT_URI: ${VITE_OIDC_REDIRECT_URI:-}
+        VITE_FHIR_BASE_URL: ${VITE_FHIR_BASE_URL:-}
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:3000}
+        VITE_APP_ENV: ${VITE_APP_ENV:-development}
+    container_name: congenia_frontend
+    restart: unless-stopped
+    environment:
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:3000}
+      APP_ENV: ${APP_ENV:-development}
+      USE_FICHA_SEARCH_MOCK: ${USE_FICHA_SEARCH_MOCK:-false}
+      USE_ADENDAS_MOCK: ${USE_ADENDAS_MOCK:-false}
+      USE_CIE10_MOCK: ${USE_CIE10_MOCK:-false}
+      ALLOW_DEV_SESSION: ${ALLOW_DEV_SESSION:-false}
+      OIDC_AUTHORITY: ${VITE_OIDC_AUTHORITY:-http://localhost:8082/realms/congenia}
+      OIDC_CLIENT_ID: ${VITE_OIDC_CLIENT_ID:-congenia-web}
+    ports:
+      - "${FRONTEND_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:80"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    networks:
+      - congenia_network
+
+  # ── RabbitMQ ───────────────────────────────────────────────────────────────
+  # Broker de mensajería para colas AMQP y gestión web.
+  # Credenciales requeridas en .env: RABBITMQ_DEFAULT_USER y RABBITMQ_DEFAULT_PASS
+  # Management UI: http://localhost:${RABBITMQ_MANAGEMENT_PORT:-15672}
+  # Playground de desarrollo (Vite) para pruebas sandbox E2E.
+  playground:
+    image: node:20-alpine
+    container_name: congenia_playground
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -lc "npm ci && npm run dev -- --host 0.0.0.0 --port 5173"
+    environment:
+      VITE_API_URL: ${PLAYGROUND_VITE_API_URL:-http://localhost:3000/v1}
+      VITE_API_INTEGRATION_URL: ${PLAYGROUND_VITE_API_INTEGRATION_URL:-http://localhost:3000/api/v1}
+      VITE_KEYCLOAK_PROXY_TARGET: ${PLAYGROUND_KEYCLOAK_PROXY_TARGET:-http://keycloak:8080}
+      VITE_KEYCLOAK_TOKEN_URL: ${PLAYGROUND_KEYCLOAK_TOKEN_URL:-/keycloak/realms/congenia/protocol/openid-connect/token}
+      VITE_KEYCLOAK_CLIENT_ID: ${PLAYGROUND_KEYCLOAK_CLIENT_ID:-sadc}
+      VITE_KEYCLOAK_CLIENT_SECRET: ${PLAYGROUND_KEYCLOAK_CLIENT_SECRET:-}
+      VITE_KEYCLOAK_SCOPE: ${PLAYGROUND_KEYCLOAK_SCOPE:-congenia.sessions:init}
+      VITE_OFFICIAL_FORM_URL: ${PLAYGROUND_VITE_OFFICIAL_FORM_URL:-http://localhost:8080/}
+      VITE_PLAYGROUND_FICHA_URL: ${PLAYGROUND_VITE_FICHA_URL:-http://localhost:5173/ficha}
+      VITE_SANDBOX_PATIENT_ID: ${PLAYGROUND_PATIENT_ID:-}
+      VITE_SANDBOX_PATIENT_NOMBRE: ${PLAYGROUND_PATIENT_NOMBRE:-}
+      VITE_SANDBOX_FECHA_CONSULTA: ${PLAYGROUND_FECHA_CONSULTA:-}
+      VITE_SANDBOX_DIAGNOSTICO: ${PLAYGROUND_DIAGNOSTICO:-}
+      VITE_SANDBOX_MEDICO_ID: ${PLAYGROUND_MEDICO_ID:-}
+      VITE_SANDBOX_MEDICO_NOMBRE: ${PLAYGROUND_MEDICO_NOMBRE:-}
+      VITE_SANDBOX_ESPECIALIDAD: ${PLAYGROUND_ESPECIALIDAD:-}
+    ports:
+      - "${PLAYGROUND_PORT:-5173}:5173"
+    volumes:
+      - ../CONGENIA-PLAYGROUND:/app
+      - congenia_playground_node_modules:/app/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+      keycloak:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5173"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - congenia_network
+    profiles:
+      - dev
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    container_name: congenia_rabbitmq
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER:?RABBITMQ_DEFAULT_USER es requerido}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS:?RABBITMQ_DEFAULT_PASS es requerido}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_DEFAULT_VHOST:-/}
+    ports:
+      - "${RABBITMQ_AMQP_PORT:-5672}:5672"              # AMQP
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"      # Management UI
+    volumes:
+      - congenia_rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - congenia_network
+
+  # ── PDF Worker ─────────────────────────────────────────────────────────────
+  # Worker asíncrono que consume eventos de consentimiento para generar PDF.
+  pdf_worker:
+    build:
+      context: ./CONGENIA-M1-PDF-WORKER
+      dockerfile: Dockerfile
+    container_name: congenia_pdf_worker
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      APP_ENV: ${APP_ENV:-development}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-congenia}
+      # Rol sin UPDATE/DELETE sobre la bitacora; el propietario solo migra.
+      POSTGRES_USER: ${POSTGRES_APP_USER:-congenia_app}
+      POSTGRES_PASSWORD: ${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD es requerido}
+      RABBITMQ_HOST: rabbitmq
+      RABBITMQ_PORT: 5672
+      RABBITMQ_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_PASSWORD: ${RABBITMQ_DEFAULT_PASS}
+      RABBITMQ_VHOST: ${RABBITMQ_DEFAULT_VHOST:-/}
+      RABBITMQ_QUEUE_MAIN: ${RABBITMQ_QUEUE_MAIN:-consent.pdf.generate}
+      RABBITMQ_QUEUE_DLQ: ${RABBITMQ_QUEUE_DLQ:-consent.pdf.generate.dlq}
+      S3_ENDPOINT: ${S3_ENDPOINT:-http://seaweedfs:8333}
+      S3_BUCKET: ${S3_BUCKET:-congenia-docs}
+      S3_REGION: ${S3_REGION:-us-east-1}
+      S3_ACCESS_KEY_ID: ${S3_ACCESS_KEY_ID:-congenia}
+      S3_SECRET_ACCESS_KEY: ${S3_SECRET_ACCESS_KEY:-congenia}
+      WORKER_PREFETCH: ${WORKER_PREFETCH:-3}
+      WORKER_MAX_RETRIES: ${WORKER_MAX_RETRIES:-5}
+      WORKER_RETRY_BACKOFF_MS: ${WORKER_RETRY_BACKOFF_MS:-2000}
+      WORKER_RETRY_BACKOFF_MULTIPLIER: ${WORKER_RETRY_BACKOFF_MULTIPLIER:-2}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      # migrate habilita el login de congenia_app.
+      migrate:
+        condition: service_completed_successfully
+      rabbitmq:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_healthy
+    networks:
+      - congenia_network
+
+  # ── CIE-10 Batch ──────────────────────────────────────────────────────────
+  # One-shot job. Run locally with:
+  #   docker compose --profile jobs run --rm cie10_batch
+  cie10_batch:
+    build:
+      context: ./CONGENIA-CIE10
+      dockerfile: Dockerfile
+    container_name: congenia_cie10_batch
+    restart: "no"
+    profiles:
+      - jobs
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      CIE10_SOURCE_MODE: ${CIE10_SOURCE_MODE:-local}
+      CIE10_CATALOG_CSV_PATH: ${CIE10_CATALOG_CSV_PATH:-/data/CIE10.csv}
+      CIE10_TRANSLATOR_CSV_PATH: ${CIE10_TRANSLATOR_CSV_PATH:-/data/CIE10_Traductor.csv}
+      CIE10_MAX_RECORDS: ${CIE10_MAX_RECORDS:-10}
+      CIE10_OPENAI_MODEL: ${CIE10_OPENAI_MODEL:-gpt-6-luna}
+      CIE10_REASONING_EFFORT: ${CIE10_REASONING_EFFORT:-medium}
+      CIE10_REPAIR_ATTEMPTS: ${CIE10_REPAIR_ATTEMPTS:-2}
+      CIE10_REVIEW_EXPORT_S3_PREFIX: ${CIE10_REVIEW_EXPORT_S3_PREFIX:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      CIE10_S3_ENDPOINT: ${CIE10_S3_ENDPOINT:-${S3_ENDPOINT:-http://seaweedfs:8333}}
+      CIE10_S3_REGION: ${CIE10_S3_REGION:-${S3_REGION:-us-east-1}}
+      CIE10_S3_ACCESS_KEY_ID: ${CIE10_S3_ACCESS_KEY_ID:-${S3_ACCESS_KEY_ID:-congenia}}
+      CIE10_S3_SECRET_ACCESS_KEY: ${CIE10_S3_SECRET_ACCESS_KEY:-${S3_SECRET_ACCESS_KEY:-congenia}}
+      CIE10_S3_FORCE_PATH_STYLE: ${CIE10_S3_FORCE_PATH_STYLE:-true}
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-congenia}
+      POSTGRES_USER: ${POSTGRES_APP_USER:-congenia_app}
+      POSTGRES_PASSWORD: ${POSTGRES_APP_PASSWORD:?POSTGRES_APP_PASSWORD es requerido}
+    volumes:
+      - ./CONGENIA-CIE10/CIE10.csv:/data/CIE10.csv:ro
+      - ./CONGENIA-CIE10/CIE10_Traductor.csv:/data/CIE10_Traductor.csv:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    networks:
+      - congenia_network
+
+  # ── SeaweedFS ──────────────────────────────────────────────────────────────
+  seaweedfs:
+    image: chrislusf/seaweedfs:${SEAWEED_VERSION:-latest}
+    container_name: congenia_seaweedfs
+    restart: unless-stopped
+    command: "server -dir=/data -s3 -volume.max=${SEAWEED_MAX_VOLUMES:-50}"
+    ports:
+      - "${SEAWEED_MASTER_PORT:-9333}:9333"    # Master
+      - "${SEAWEED_VOLUME_PORT:-8081}:8080"    # Volume Server (8081 en host para evitar conflicto)
+      - "${SEAWEED_S3_PORT:-8333}:8333"        # S3 API
+      - "${SEAWEED_FILER_PORT:-8888}:8888"     # Filer
+    volumes:
+      - congenia_seaweedfs_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:9333/cluster/status >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    networks:
+      - congenia_network
+
+# ── Volúmenes ──────────────────────────────────────────────────────────────
+volumes:
+  congenia_pgdata:
+    driver: local
+    name: congenia_pgdata
+
+  congenia_seaweedfs_data:
+    driver: local
+    name: congenia_seaweedfs_data
+
+  congenia_rabbitmq_data:
+    driver: local
+    name: congenia_rabbitmq_data
+
+  congenia_redis_data:
+    driver: local
+    name: congenia_redis_data
+
+# ── Redes ──────────────────────────────────────────────────────────────────
+networks:
+  congenia_network:
+    driver: bridge
+    name: congenia_network

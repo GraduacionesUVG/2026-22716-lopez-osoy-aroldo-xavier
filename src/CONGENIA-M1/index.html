@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./src/assets/C.png" />
+    <link rel="icon" type="image/png" href="./src/assets/C.png" />
+    <link rel="apple-touch-icon" href="./src/assets/C.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ficha Genetica - Congenia</title>
+    <!-- Configuracion de arranque: el contenedor reescribe este archivo al
+         iniciar (docker-entrypoint.d/40-congenia-runtime-config.sh).
+         Va en <head> a proposito: Vite inyecta el bundle al final del head, de
+         modo que aqui queda antes tanto en orden de documento como de
+         ejecucion. Dejarlo en <body> tambien funcionaria —un script clasico
+         corre antes que uno type="module", que va diferido— pero seria
+         depender de una sutileza que nadie recuerda al leer el archivo. -->
+    <script src="/config.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

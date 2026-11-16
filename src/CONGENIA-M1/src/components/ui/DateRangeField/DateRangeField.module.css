@@ -1,0 +1,114 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-black);
+}
+
+.field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius);
+  background-color: var(--color-surface);
+  transition: border-color 0.2s ease;
+}
+
+/* El marco se ilumina cuando el foco está en cualquiera de los dos campos, para
+   que el control se lea como una sola cosa. */
+.field:focus-within {
+  border-color: var(--color-primary);
+}
+
+.fieldError {
+  border-color: var(--color-destructive);
+}
+
+.fieldDisabled {
+  background-color: var(--color-readonly-bg);
+  border-color: var(--color-secondary-light);
+}
+
+.icon {
+  flex-shrink: 0;
+  color: var(--color-secondary);
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+  cursor: pointer;
+}
+
+.slotLabel {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-secondary);
+  line-height: 1.2;
+}
+
+.input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-black);
+  outline: none;
+  cursor: pointer;
+}
+
+.input:disabled {
+  color: var(--color-secondary);
+  cursor: default;
+}
+
+.input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.separator {
+  width: 1px;
+  align-self: stretch;
+  flex-shrink: 0;
+  background: var(--color-gray-light);
+}
+
+.errorMessage {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: var(--color-destructive);
+}
+
+@media (max-width: 640px) {
+  /* En pantalla angosta los dos campos no caben lado a lado sin truncarse. */
+  .field {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .separator {
+    width: auto;
+    height: 1px;
+  }
+
+  .icon {
+    display: none;
+  }
+}

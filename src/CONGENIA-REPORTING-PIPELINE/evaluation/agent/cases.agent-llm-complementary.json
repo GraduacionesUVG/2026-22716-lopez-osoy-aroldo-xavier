@@ -1,0 +1,146 @@
+[
+  {
+    "questionId": "agent-llm-001",
+    "category": "sigsa-average-two-filters",
+    "question": "Calcula la edad promedio de las atenciones de producción ambulatoria durante 2025 para cada sexo y ordénala de mayor a menor.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped",
+    "expectedResult": [
+      { "sexo": "F", "promedio_edad": 30.37 },
+      { "sexo": "M", "promedio_edad": 26.23 }
+    ],
+    "expectedColumnAliases": {
+      "promedio_edad": ["edad_promedio", "edad_promedio_anios"]
+    }
+  },
+  {
+    "questionId": "agent-llm-002",
+    "category": "sigsa-ranking-temporal",
+    "question": "Identifica los cinco municipios con más atenciones de producción ambulatoria en 2025, ordenados de mayor a menor.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "municipio": "Cobán", "total": 63431 },
+      { "municipio": "San Pedro Carchá", "total": 21019 },
+      { "municipio": "San Cristóbal Verapaz", "total": 6592 },
+      { "municipio": "San Juan Chamelco", "total": 6276 },
+      { "municipio": "Tactic", "total": 5274 }
+    ],
+    "expectedBlockTypes": ["table"]
+  },
+  {
+    "questionId": "agent-llm-003",
+    "category": "sigsa-average-ranking",
+    "question": "¿Cuáles son las diez áreas médicas con mayor edad promedio de atención en 2025, considerando solo áreas con al menos 100 registros? Incluye promedio y cantidad.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "servicio": "MEDICINA DE MUJERES", "promedio_edad": 46.39, "total": 4160 },
+      { "servicio": "MEDICINA DE HOMBRES", "promedio_edad": 44.94, "total": 1469 },
+      { "servicio": "CIRUGIA DE HOMBRES", "promedio_edad": 43.18, "total": 806 },
+      { "servicio": "TRAUMATOLOGIA DE MUJERES", "promedio_edad": 42.88, "total": 1520 },
+      { "servicio": "CIRUGIA DE MUJERES", "promedio_edad": 40.82, "total": 1412 },
+      { "servicio": "MEDICINA GENERAL", "promedio_edad": 40.04, "total": 32468 },
+      { "servicio": "PISQUIATRIA", "promedio_edad": 36.72, "total": 1315 },
+      { "servicio": "NEUROLOGIA", "promedio_edad": 32.06, "total": 1020 },
+      { "servicio": "CIRUGIA", "promedio_edad": 31.99, "total": 15134 },
+      { "servicio": "TRAUMATOLOGIA DE HOMBRES", "promedio_edad": 30.44, "total": 1944 }
+    ],
+    "expectedColumnAliases": {
+      "servicio": ["area_medica"],
+      "promedio_edad": ["edad_promedio", "edad_promedio_anios"],
+      "total": ["cantidad", "cantidad_registros", "atenciones"]
+    },
+    "expectedBlockTypes": ["table"]
+  },
+  {
+    "questionId": "agent-llm-004",
+    "category": "sigsa-cte-multidimensional",
+    "question": "Muestra mes a mes durante 2025 las atenciones de las tres áreas médicas con mayor volumen anual, conservando el desglose por mes y área.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped"
+  },
+  {
+    "questionId": "agent-llm-005",
+    "category": "sigsa-boolean-two-dimensions",
+    "question": "Desglosa las atenciones de producción ambulatoria de 2025 por sexo y por condición de emergencia, con una fila por combinación.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped",
+    "expectedResult": [
+      { "sexo": "F", "emergencia": false, "total": 74883 },
+      { "sexo": "M", "emergencia": false, "total": 44289 }
+    ],
+    "expectedColumnAliases": { "total": ["atenciones", "cantidad", "total_atenciones"] }
+  },
+  {
+    "questionId": "agent-llm-006",
+    "category": "sigsa-multiple-measures-temporal",
+    "question": "Para cada mes de 2025, presenta por separado la cantidad de primeras consultas, reconsultas e interconsultas de producción ambulatoria.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped"
+  },
+  {
+    "questionId": "agent-llm-007",
+    "category": "congenia-average-by-specialty",
+    "question": "Calcula para cada especialidad de ficha clínica el promedio de signos de alerta y la cantidad de fichas, ordenando por promedio descendente.",
+    "expectedSource": "CONGENIA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "especialidad": "Genetica Clinica", "promedio_signos": 0, "total_fichas": 13 }
+    ],
+    "expectedColumnAliases": {
+      "promedio_signos": ["promedio_signos_alerta"],
+      "total_fichas": ["cantidad_fichas"]
+    }
+  },
+  {
+    "questionId": "agent-llm-008",
+    "category": "congenia-sum-and-count",
+    "question": "Para cada sexo registrado en ficha clínica, calcula el total de exámenes indicados y la cantidad de fichas.",
+    "expectedSource": "CONGENIA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped",
+    "expectedResult": [
+      { "sexo": null, "total_examenes": 0, "total_fichas": 10 },
+      { "sexo": "F", "total_examenes": 0, "total_fichas": 1 },
+      { "sexo": "I", "total_examenes": 0, "total_fichas": 1 },
+      { "sexo": "M", "total_examenes": 0, "total_fichas": 1 }
+    ],
+    "expectedColumnAliases": {
+      "total_examenes": ["total_examenes_indicados"],
+      "total_fichas": ["cantidad_fichas"]
+    },
+    "ignoreResultOrder": true
+  },
+  {
+    "questionId": "agent-llm-009",
+    "category": "congenia-two-dimensions",
+    "question": "Desglosa las fichas clínicas por origen de creación y estado de ficha, conservando ambas dimensiones.",
+    "expectedSource": "CONGENIA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "origen_creacion": "MANUAL", "estado_ficha": "COMPLETA", "total": 13 }
+    ],
+    "expectedColumnAliases": {
+      "origen_creacion": ["origen"],
+      "estado_ficha": ["estado"],
+      "total": ["total_fichas", "cantidad_fichas"]
+    }
+  },
+  {
+    "questionId": "agent-llm-010",
+    "category": "cross-source-independent-comparison",
+    "question": "¿Qué diferencias hay entre producción ambulatoria y ficha clínica en su distribución de registros por sexo? Consulta cada fuente por separado y presenta ambos resultados sin unir registros individuales.",
+    "expectedSource": "MULTI",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "grouped"
+  }
+]

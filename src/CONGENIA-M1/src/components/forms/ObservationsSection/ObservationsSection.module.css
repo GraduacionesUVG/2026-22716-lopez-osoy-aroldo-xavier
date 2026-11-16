@@ -1,0 +1,212 @@
+/* Misma caja que Signos de Alerta y Estudios: la ficha se lee como un solo sistema. */
+.card {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  /* `clip` y no `hidden`: no crea un contenedor de scroll, que dejaria sin efecto
+     el `position: sticky` de la cabecera de la seccion. */
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 14px 16px;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.disabledNotice {
+  padding: 12px 14px 16px;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  text-align: center;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Borde y radio de MediaCard, sin el hueco de la miniatura. */
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+}
+
+.itemHighlighted {
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+  animation: observacionPulse 1.2s ease-out 2;
+}
+
+@keyframes observacionPulse {
+  0%, 100% { box-shadow: 0 0 0 3px var(--color-primary-light); }
+  50%      { box-shadow: 0 0 0 7px color-mix(in srgb, var(--color-primary-light) 45%, transparent); }
+}
+
+.itemBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Tres lineas en la lista; el texto completo se lee en el detalle. */
+.itemText {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: 1.45;
+  color: var(--color-black);
+}
+
+.itemDate {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+.removeButton {
+  width: 28px;
+  height: 28px;
+  border-radius: 9999px;
+  border: none;
+  background-color: rgba(185, 28, 28, 0.12);
+  color: var(--color-destructive);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease;
+}
+
+.removeButton:hover {
+  background-color: rgba(185, 28, 28, 0.2);
+}
+
+.removeButton:focus-visible {
+  outline: 3px solid rgba(185, 28, 28, 0.35);
+  outline-offset: 2px;
+}
+
+.emptyText {
+  padding: 8px 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+}
+
+/* ── Modales: mismo diseño que el alta de signos de alerta ─────── */
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1.5px solid var(--color-border);
+}
+
+.modalTitle {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.modalClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow: auto;
+  min-height: 0;
+}
+
+.stepBodyLabel {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.4;
+}
+
+.detailText {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: 1.55;
+  color: var(--color-black);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.modalFooter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.detailFooter {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1.5px solid var(--color-border);
+}

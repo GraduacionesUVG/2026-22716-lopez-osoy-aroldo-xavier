@@ -1,0 +1,346 @@
+.card {
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  /* `clip` y no `hidden`: recorta igual las esquinas redondeadas, pero no crea un
+     contenedor de scroll, que es lo que dejaba sin efecto el `position: sticky`
+     de la cabecera de la seccion. */
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 14px 16px;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 50;
+}
+
+.modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  border-bottom: 1.5px solid var(--color-border);
+}
+
+.modalTitle {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.modalClose {
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  border: none;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.modalFooter {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.detailModal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+}
+
+.detailImageWrapper {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-gray-light);
+  aspect-ratio: 4 / 3;
+  min-height: 200px;
+  flex-shrink: 0;
+}
+
+.detailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.detailImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  background: var(--color-gray-light);
+}
+
+.fileIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-2);
+  color: var(--color-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.detailFilePanel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: inherit;
+  text-decoration: none;
+}
+
+a.detailFilePanel {
+  cursor: pointer;
+  transition: border-color 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+a.detailFilePanel:hover {
+  border-color: var(--color-secondary);
+  background: var(--color-2);
+  box-shadow: 0 6px 18px rgba(0, 62, 105, 0.1);
+}
+
+a.detailFilePanel:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.detailFileText {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.detailFileActionIcon {
+  margin-left: auto;
+  color: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.previewButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: none;
+  background: rgba(0, 0, 0, 0.55);
+  color: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.detailBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detailLabel {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  color: var(--color-gray);
+}
+
+.detailText {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--color-black);
+}
+
+.detailFooter {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 16px;
+  border-top: 1.5px solid var(--color-border);
+}
+
+.previewOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 60;
+}
+
+.previewImage {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+}
+
+.previewClose {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  color: var(--color-white);
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.fieldError {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-destructive, #b91c1c);
+}
+
+/* Lista vacía en modo lectura: deja claro que no se indicó nada, en vez de
+   dejar un hueco que se lee como un error de carga. */
+.emptyText {
+  padding: 8px 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+}
+
+/* Sustitucion: mismo patron binario que los Sí/No de Otros Demograficos. */
+.replacementBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.replacementLabel {
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-black);
+}
+
+.binaryGroup {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.binaryGroup > button {
+    width: 100%;
+    justify-content: center;
+}
+
+.replacementChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+/* ── Pasos del alta ─────────────────────────────────────────────
+   Mismo indicador que el alta de signos de alerta (AlertSignsSection.module.css). */
+
+.stepIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-bottom: 1.5px solid var(--color-border);
+  background: var(--color-readonly-bg, #f9fafb);
+}
+
+.stepDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-border);
+  transition: background 0.2s, width 0.2s;
+  flex-shrink: 0;
+}
+
+.stepDotCurrent {
+  width: 20px;
+  background: var(--color-primary);
+  border-radius: 4px;
+}
+
+.stepDotDone {
+  background: var(--color-primary);
+  opacity: 0.45;
+}
+
+.stepLabel {
+  font-family: var(--font-family);
+  font-size: var(--font-size-xs);
+  color: var(--color-primary);
+  margin-left: auto;
+}
+
+.stepBodyLabel {
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray);
+  line-height: 1.4;
+}

@@ -1,0 +1,24 @@
+/* Por encima de todo lo demas: los modales de detalle de las secciones estan en
+   60 -el mismo z-index base de `Modal`- y los del orquestador en 100. Una
+   confirmacion nunca debe quedar por debajo de lo que la abrio. */
+.overlay {
+  z-index: 120;
+}
+
+.title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.message {
+  font-size: var(--font-size-sm);
+  line-height: 1.5;
+  color: var(--color-black);
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}

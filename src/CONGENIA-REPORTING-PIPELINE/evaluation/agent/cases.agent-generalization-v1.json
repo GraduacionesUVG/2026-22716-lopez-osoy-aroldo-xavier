@@ -1,0 +1,80 @@
+[
+  {
+    "questionId": "agent-generalization-001",
+    "category": "sigsa-geographic-ranking",
+    "question": "Identifica los cinco departamentos geográficos con más atenciones de producción ambulatoria durante 2024.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "departamento": "ALTA VERAPAZ", "total": 47856 },
+      { "departamento": "BAJA VERAPAZ", "total": 944 },
+      { "departamento": "QUICHE", "total": 330 },
+      { "departamento": "EL PETEN", "total": 72 },
+      { "departamento": "GUATEMALA", "total": 65 }
+    ],
+    "expectedColumnAliases": {
+      "departamento": ["departamento_geografico"],
+      "total": ["cantidad", "atenciones", "cantidad_atenciones"]
+    }
+  },
+  {
+    "questionId": "agent-generalization-002",
+    "category": "sigsa-average-minimum-group",
+    "question": "Calcula la edad promedio por pueblo en producción ambulatoria durante 2025, considerando solo grupos con al menos 500 atenciones.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "pueblo": "Mestiso, Ladino", "promedio_edad": 31.32 },
+      { "pueblo": "Maya", "promedio_edad": 28.53 },
+      { "pueblo": "No indica", "promedio_edad": 28.44 }
+    ],
+    "expectedColumnAliases": {
+      "promedio_edad": ["edad_promedio", "edad_promedio_anios"]
+    },
+    "ignoreResultOrder": true
+  },
+  {
+    "questionId": "agent-generalization-003",
+    "category": "sigsa-ranking-filtered-by-sex",
+    "question": "Muestra los tres diagnósticos más frecuentes en atenciones de sexo femenino durante 2025 en producción ambulatoria.",
+    "expectedSource": "SIGSA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "diagnostico": "ITU", "total": 2055 },
+      { "diagnostico": "RESFRIADO COMUN", "total": 937 },
+      { "diagnostico": "ENFERMEDAD PEPTICA", "total": 696 }
+    ],
+    "expectedColumnAliases": { "total": ["cantidad", "atenciones"] }
+  },
+  {
+    "questionId": "agent-generalization-004",
+    "category": "congenia-provisional-observations",
+    "question": "Agrupa las fichas clínicas por condición provisional y muestra el promedio de observaciones y la cantidad de fichas.",
+    "expectedSource": "CONGENIA",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "es_provisional": false, "promedio_observaciones": 0, "total_fichas": 13 }
+    ],
+    "expectedColumnAliases": {
+      "es_provisional": ["provisional", "condicion_provisional"],
+      "promedio_observaciones": ["promedio_numero_observaciones"],
+      "total_fichas": ["cantidad_fichas", "total"]
+    }
+  },
+  {
+    "questionId": "agent-generalization-005",
+    "category": "cross-source-temporal-count",
+    "question": "Compara el total de atenciones de producción ambulatoria y el total de fichas clínicas durante 2025.",
+    "expectedSource": "MULTI",
+    "expectedStatus": "answered",
+    "expectedAnswerShape": "rows",
+    "expectedResult": [
+      { "fuente": "SIGSA", "total": 119172 },
+      { "fuente": "CONGENIA", "total": 0 }
+    ]
+  }
+]

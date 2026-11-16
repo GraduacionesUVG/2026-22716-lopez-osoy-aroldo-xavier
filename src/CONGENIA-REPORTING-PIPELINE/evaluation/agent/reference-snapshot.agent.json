@@ -1,0 +1,22 @@
+{
+  "frozenAt": "2026-10-15T00:09:13-06:00",
+  "sigsa": {
+    "datasetVersion": "sigsa-2026-10",
+    "schemaVersion": "reporting-v1",
+    "sha256": "e455da51eb23d922bbfbd776cc088626fad32c0898bf213184acdf2ed40c7b38",
+    "rowCount": 190140,
+    "minDate": "2024-01-31",
+    "maxDate": "2026-03-25"
+  },
+  "congenia": {
+    "environment": "local-evaluation",
+    "rowCount": 13,
+    "minDate": "2026-05-10",
+    "maxDate": "2026-10-02"
+  },
+  "notes": [
+    "Expected results were calculated directly with the reference SQL files, without using agent responses.",
+    "The infection urinary case uses the operational filter lower(diagnostico) LIKE '%infeccion urinaria%'; accents are removed from the natural-language filter before querying.",
+    "CONGENIA reference values are valid only while the local evaluation view remains unchanged."
+  ]
+}

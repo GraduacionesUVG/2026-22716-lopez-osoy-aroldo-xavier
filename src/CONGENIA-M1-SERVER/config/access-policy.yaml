@@ -1,0 +1,65 @@
+# Politica de permisos de CONGENIA: unica fuente de la matriz funcion -> permisos.
+#
+# La API la carga y la valida al arrancar (src/utils/accessPolicy.js); si es
+# invalida, la API no inicia. No se modifica en ejecucion: un cambio aqui pasa
+# por PR, revision y test/route-role-audit.test.js.
+#
+# Keycloak asigna personas a grupos; esta politica dice que puede hacer cada
+# grupo. El access token trae el claim `groups` con la ruta completa:
+#   /instituciones/<tenant>/<funcion>  -> permisos de <funcion> solo en <tenant>
+#   /superadministradores              -> todos los permisos en todas las instituciones
+# Cualquier otro grupo no otorga nada.
+
+version: 1
+
+# Prefijo de los grupos de institucion en Keycloak.
+instituciones: /instituciones
+
+# Funcion = subgrupo de /instituciones/<tenant>. La prioridad decide la
+# etiqueta que se muestra cuando alguien tiene varias (mayor gana).
+funciones:
+  medicos:
+    etiqueta: Médico
+    prioridad: 10
+  genetistas:
+    etiqueta: Genetista
+    prioridad: 20
+  coordinadores:
+    etiqueta: Coordinador
+    prioridad: 30
+  revisores:
+    etiqueta: Administrador
+    prioridad: 40
+
+# Nombres estables: el frontend depende solo de estos nombres (GET /api/v1/me).
+permisos:
+  dashboard:
+    descripcion: Entrar al dashboard, buscar pacientes y leer fichas
+    funciones: [medicos, genetistas, coordinadores, revisores]
+  fichas.crear:
+    descripcion: Registrar fichas y solicitar adendas
+    funciones: [medicos, genetistas, coordinadores]
+  adendas.revisar:
+    descripcion: Ver la bandeja y aprobar o rechazar adendas
+    funciones: [genetistas, coordinadores]
+  cie10.corregir:
+    descripcion: Corregir codigos CIE-10
+    funciones: [revisores]
+  reporteria:
+    descripcion: Reporteria y agente de consultas
+    funciones: [genetistas, coordinadores, revisores]
+  catalogos.administrar:
+    descripcion: Crear, editar y borrar catalogos clinicos
+    funciones: []
+
+superadmin:
+  grupo: /superadministradores
+  etiqueta: Superadministrador
+  prioridad: 100
+  # Todos los permisos de la lista anterior, en todas las instituciones.
+  todas_las_instituciones: true
+  # Permisos que solo tiene el superadministrador y que no dependen de una institucion.
+  permisos_exclusivos: [catalogos.administrar]
+  # Reglas de negocio de las que queda exento. Ninguna: la separacion de
+  # funciones (quien solicita una adenda no la resuelve) tambien le aplica.
+  exento_de: []

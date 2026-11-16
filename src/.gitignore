@@ -1,0 +1,28 @@
+# Dependencies and generated files inside components
+**/node_modules/
+**/dist/
+**/build/
+**/coverage/
+**/.cache/
+**/*.log
+
+# Local environments and runtime data
+.env
+**/.env
+**/.env.local
+**/.env.*.local
+data/
+volumes/
+output/
+artifacts/
+
+# Editors and operating systems
+**/.idea/
+**/.vscode/
+**/*.swp
+**/*.swo
+**/.DS_Store
+**/Thumbs.db
+
+# The component source, Markdown documentation, synthetic fixtures, public CA
+# bundles, and test-only TLS fixtures are intentionally part of the delivery.

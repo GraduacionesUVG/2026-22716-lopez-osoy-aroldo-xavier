@@ -1,0 +1,18 @@
+# Dependencies/build
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# Real hospital datasets must never be committed here.
+data/
+input/
+output/
+*.csv
+*.xlsx
+*.jsonl
+
+# Synthetic fixtures are allowed.
+!fixtures/*.csv
+!fixtures/*.json
